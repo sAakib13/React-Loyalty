@@ -4,7 +4,7 @@ import Home from "./component/Home/Home";
 
 function App() {
   return (
-    <div className="font-jost">
+    <div className="font-jost bg-white min-h-screen">
       <Header />
       <Home />
       <Brands />
