@@ -1,6 +1,7 @@
 import Brands from "./component/Brands/Brands";
 import Header from "./component/Header/Header";
 import Home from "./component/Home/Home";
+import RegistrationForm from "./component/register/register";
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <Header />
       <Home />
       <Brands />
+      {/* <RegistrationForm/> */}
     </div>
   );
 }
