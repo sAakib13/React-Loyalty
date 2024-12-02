@@ -6,11 +6,12 @@ import { useState } from "react";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [phone, setPhoneNumber] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate("/welcome", { state: { email } }); // Pass email to the welcome page
+    // navigate("/welcome")
+    navigate("/welcome", { state: { phone } }); // Pass email to the welcome page
   };
 
   return (
@@ -29,16 +30,17 @@ export default function Login() {
         <form className="w-full max-w-sm flex flex-col gap-6" onSubmit={handleSubmit}>
           <h2 className="text-3xl font-bold text-primary text-center">Log in</h2>
           <div>
-            <Label htmlFor="email1" value="Email" />
+            <Label htmlFor="phonenumber" value="Phone Number" />
             <TextInput
-              id="email1"
-              type="email"
-              placeholder="joe@email.com"
+              id="phonenumber"
+              type="phonenumber"
+              placeholder="+9779812345678"
               required
-              onChange={(e) => setEmail(e.target.value)} // Capture email input
+              style={{ backgroundColor: "white" }}
+              onChange={(e) => setPhoneNumber(e.target.value)} // Capture phonenumber input
             />
           </div>
-          <div>
+          {/* <div>
             <Label htmlFor="password1" value="Password" />
             <TextInput
               id="password1"
@@ -46,7 +48,7 @@ export default function Login() {
               placeholder="Enter your Password"
               required
             />
-          </div>
+          </div> */}
           <Button type="submit" className="bg-primary hover:bg-teal-600">
             Login
           </Button>
