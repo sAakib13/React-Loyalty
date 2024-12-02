@@ -3,14 +3,15 @@ import { Button, Label, TextInput } from "flowbite-react";
 import logo from "../../assets/telerivetlogo.webp";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { validateOTP } from "../../utlis/validateOTP";
 
 
 const OTP = () => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
-//   const { state } = useLocation(); // Get the phone number passed from the previous page
-//   const { phone } = state || {}; // Destructure phone from the state
+  const { state } = useLocation(); // Get the phone number passed from the previous page
+  const { phone } = state || {}; // Destructure phone from the state
 
   const handleSubmit = async (event) => {
     event.preventDefault();
