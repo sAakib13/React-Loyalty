@@ -2,21 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 a {
   font-weight: 500;
   color: #646cff;
@@ -57,7 +42,7 @@ button:focus-visible {
 input:-webkit-autofill {
   background-color: #e0f2fe !important; /* Light blue background */
   color: #000 !important;               /* Text color */
-  -webkit-box-shadow: 0 0 0px 1000px #000 inset !important; /* Override autofill background */
+  -webkit-box-shadow: 0 0 0px 1000px #fdfcfc inset !important; /* Override autofill background */
   transition: background-color 5000s ease-in-out 0s; /* Ensure autofill stays styled */
 }
 
