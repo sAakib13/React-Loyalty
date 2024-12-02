@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://api.telerivet.com/v1';
+const API_URL = 'https://api.telerivet.com/v1/projects/PJceb2fffe695c67ae/messages/send';
 const API_KEY = 'YOUR_API_KEY'; // Replace with your actual API key
 
 export const sendMessage = async (phoneNumber, message) => {
