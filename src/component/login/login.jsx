@@ -1,5 +1,6 @@
 "use client";
 import { Button, Label, TextInput } from "flowbite-react";
+import "../../index.css"
 import logo from "../../assets/telerivetlogo.webp";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -36,7 +37,7 @@ export default function Login() {
               type="phonenumber"
               placeholder="+9779812345678"
               required
-              style={{ backgroundColor: "white" }}
+              style={{ backgroundColor: "white", color: "black" }}
               onChange={(e) => setPhoneNumber(e.target.value)} // Capture phonenumber input
             />
           </div>
