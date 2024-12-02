@@ -42,6 +42,49 @@ app.post("/generate-otp", async (req, res) => {
   }
 });
 
+app.post("/validate-otp", async (req, res) => {
+  const { phone_number, otp } = req.body; // Get phone_number and user-entered OTP from the request
+  const API_URL_VALIDATE =
+    "https://api.telerivet.com/v1/projects/PJb993879964086d72/services/SVbf918bf3363669c8/invoke";
+
+  console.log("Validating OTP for:", phone_number);
+
+  try {
+    // Call the Telerivet API to validate the OTP
+    const response = await axios.post(
+      API_URL_VALIDATE,
+      {
+        api_key: API_KEY,
+        context: "contact",
+        phone_number: phone_number,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    // Extract the return_value (the actual OTP sent by Telerivet)
+    const serverOtp = response.data.return_value;
+
+    console.log("Server OTP:", serverOtp);
+
+    // Check if the user-provided OTP matches the server OTP
+    if (otp === serverOtp) {
+      res.json({ success: true, message: "OTP verified successfully!" });
+    } else {
+      res.status(401).json({ success: false, message: "Invalid OTP" });
+    }
+  } catch (error) {
+    console.error(
+      "Error occurred:",
+      error.response ? error.response.data : error.message
+    );
+    res.status(500).send("Failed to validate OTP");
+  }
+});
+
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Backend server running on http://localhost:${PORT}`);

@@ -26,7 +26,7 @@ export default function Login() {
 
       console.log("OTP Response:", otpResponse);
       // Navigate to the welcome page with phone state
-      navigate("/welcome", { state: { phone } });
+      navigate("/otp", { state: { phone } });
     } catch (error) {
       console.error("Failed to generate OTP:", error);
     }
