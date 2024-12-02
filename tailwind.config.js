@@ -11,7 +11,7 @@ module.exports = {
     extend: {
       colors: {
         dark: "rgb(28, 28, 26)",          // Custom dark color
-        hover: "rgb(21, 146, 209)",       // Custom hover color
+        primary: "rgb(21, 146, 209)",       // Custom hover color
         light: "#adb9c3",                 // Custom light color
       },
       fontFamily: {
