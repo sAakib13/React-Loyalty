@@ -1,24 +1,41 @@
 "use client";
 import { Button, Label, TextInput } from "flowbite-react";
-import "../../index.css"
+import "../../index.css";
 import logo from "../../assets/telerivetlogo.webp";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { generateOTP } from "../../utlis/genrateOTP";
 
 export default function Login() {
   const navigate = useNavigate();
   const [phone, setPhoneNumber] = useState("");
 
-  const handleSubmit = (event) => {
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   // navigate("/welcome")
+  //   navigate("/welcome", { state: { phone } }); // Pass email to the welcome page
+  // };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // navigate("/welcome")
-    navigate("/welcome", { state: { phone } }); // Pass email to the welcome page
+    try {
+      // Call the generateOTP function with the phone number
+      const otpResponse = await generateOTP({
+        phone_number: phone, // Pass the phone number dynamically
+      });
+
+      console.log("OTP Response:", otpResponse);
+      // Navigate to the welcome page with phone state
+      navigate("/welcome", { state: { phone } });
+    } catch (error) {
+      console.error("Failed to generate OTP:", error);
+    }
   };
 
   return (
-    <div className="h-screen flex">
+    <div className="flex h-screen">
       {/* Sidebar Section */}
-      <div className="w-1/2 bg-primary flex flex-col justify-center items-center text-white">
+      <div className="flex w-1/2 flex-col items-center justify-center bg-primary text-white">
         <div className="text-center">
           <div className="mb-4">
             <img src={logo} alt="Logo" />
@@ -27,9 +44,14 @@ export default function Login() {
       </div>
 
       {/* Login Form Section */}
-      <div className="w-1/2 flex flex-col justify-center items-center bg-white">
-        <form className="w-full max-w-sm flex flex-col gap-6" onSubmit={handleSubmit}>
-          <h2 className="text-3xl font-bold text-primary text-center">Log in</h2>
+      <div className="flex w-1/2 flex-col items-center justify-center bg-white">
+        <form
+          className="flex w-full max-w-sm flex-col gap-6"
+          onSubmit={handleSubmit}
+        >
+          <h2 className="text-center text-3xl font-bold text-primary">
+            Log in
+          </h2>
           <div>
             <Label htmlFor="phonenumber" value="Phone Number" />
             <TextInput
