@@ -52,12 +52,12 @@ const RegistrationForm = () => {
       </div>
       <div className="flex lg:w-1/2 md:w-[100%] sm:w-[100%] flex-col items-center justify-center lg:bg-white md:bg-primary sm:bg-primary" >
         <div className="text-center">
-          <div className="mb-4 lg:w-0 md:w-[100%] sm:w-[100%]">
+          <div className="mb-1 lg:w-0 md:w-[100%] sm:w-[100%]">
             <img src={logo} alt="Logo" className="w-36 mx-auto" />
           </div>
         </div>
-        <form className="w-full max-w-sm flex flex-col gap-6" onSubmit={handleSubmit}>
-          <h2 className="md:mt-8 sm:mt-8 lg:mt-0 text-center lg:text-3xl sm:text-2xl md:text-2xl  font-bold lg:text-primary md:text-white sm:text-white">Registration Form</h2>
+        <form className="w-full max-w-sm flex flex-col lg:gap-6 md:gap-3 sm:gap-3" onSubmit={handleSubmit}>
+          <h2 className="md:mt-2 sm:mt-2 lg:mt-0 text-center lg:text-3xl sm:text-2xl md:text-2xl  font-bold lg:text-primary md:text-white sm:text-white">Registration Form</h2>
           <div>
             <Label htmlFor="name" value="Name" className="lg:text-black sm:text-white md:text-white" />
             <TextInput
@@ -103,7 +103,7 @@ const RegistrationForm = () => {
             />
           </div>
           <div>
-            <Label htmlFor="age" value="Age" className="lg:text-black sm:text-white md:text-white"/>
+            <Label htmlFor="age" value="Age" className="lg:text-black sm:text-white md:text-white" />
             <TextInput
               type="number"
               id="age"
@@ -118,9 +118,8 @@ const RegistrationForm = () => {
           </Button>
           {message.text && (
             <div
-              className={`mt-4 rounded-lg p-2 text-center text-white ${
-                message.type === "success" ? "bg-green-600" : "bg-red-600"
-              }`}
+              className={`mt-4 rounded-lg p-2 text-center text-white ${message.type === "success" ? "bg-green-600" : "bg-red-600"
+                }`}
             >
               {message.text}
             </div>
