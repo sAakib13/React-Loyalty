@@ -35,7 +35,7 @@ export default function Login() {
   return (
     <div className="flex h-screen">
       {/* Sidebar Section */}
-      <div className="flex w-1/2 flex-col items-center justify-center bg-primary text-white">
+      <div className="flex lg:w-1/2 md:w-0 sm:w-0 flex-col items-center justify-center bg-primary text-white">
         <div className="text-center">
           <div className="mb-4">
             <img src={logo} alt="Logo" />
@@ -44,16 +44,21 @@ export default function Login() {
       </div>
 
       {/* Login Form Section */}
-      <div className="flex w-1/2 flex-col items-center justify-center bg-white">
+      <div className="flex lg:w-1/2 md:w-[100%] sm:w-[100%] flex-col items-center justify-center lg:bg-white md:bg-primary sm:bg-primary" >
+        <div className="text-center">
+          <div className="mb-4 lg:w-0 md:w-[100%] sm:w-[100%]">
+            <img src={logo} alt="Logo" className="w-36 mx-auto" />
+          </div>
+        </div>
         <form
           className="flex w-full max-w-sm flex-col gap-6"
           onSubmit={handleSubmit}
         >
-          <h2 className="text-center text-3xl font-bold text-primary">
+          <h2 className="md:mt-8 sm:mt-8 lg:mt-0 text-center lg:text-3xl sm:text-2xl md:text-2xl  font-bold lg:text-primary md:text-white sm:text-white">
             Log in
           </h2>
           <div>
-            <Label htmlFor="phonenumber" value="Phone Number" />
+            <Label htmlFor="phonenumber" value="Phone Number" className="lg:text-black sm:text-white md:text-white" />
             <TextInput
               id="phonenumber"
               type="phonenumber"
@@ -77,7 +82,7 @@ export default function Login() {
           </Button>
         </form>
         <div className="mt-4 text-sm">
-          <a href="/register" className="text-gray-500 hover:text-teal-500 hover:underline">Don't have a account? Register Here</a>
+          <a href="/register" className="lg:text-gray-500 lg:hover:text-teal-500 hover:underline  sm:text-white md:text-white sm:hover:text-black md:hover:text-black">Don't have a account? Register Here</a>
         </div>
       </div>
     </div>
