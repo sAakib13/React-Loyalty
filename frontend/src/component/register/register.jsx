@@ -56,7 +56,7 @@ const RegistrationForm = () => {
             <img src={logo} alt="Logo" className="w-36 mx-auto" />
           </div>
         </div>
-        <form className="w-full max-w-sm flex flex-col lg:gap-6 md:gap-3 sm:gap-3" onSubmit={handleSubmit}>
+        <form className="w-full max-w-sm flex flex-col lg:gap-4 md:gap-3 sm:gap-3" onSubmit={handleSubmit}>
           <h2 className="md:mt-2 sm:mt-2 lg:mt-0 text-center lg:text-3xl sm:text-2xl md:text-2xl  font-bold lg:text-primary md:text-white sm:text-white">Registration Form</h2>
           <div>
             <Label htmlFor="name" value="Name" className="lg:text-black sm:text-white md:text-white" />
