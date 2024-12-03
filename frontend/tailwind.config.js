@@ -22,6 +22,12 @@ module.exports = {
         xxl: "32px",                      // Custom extra-large font size
         huge: "68px",                     // Custom huge font size
       },
+      screens: {
+        sm: '320px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+      },
     },
   },
   plugins: [
