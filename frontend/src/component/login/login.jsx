@@ -54,7 +54,7 @@ export default function Login() {
           className="flex w-full max-w-sm flex-col gap-6"
           onSubmit={handleSubmit}
         >
-          <h2 className="md:mt-8 sm:mt-8 text-center lg:text-3xl sm:text-2xl md:text-2xl  font-bold lg:text-primary md:text-white sm:text-white">
+          <h2 className="md:mt-8 sm:mt-8 lg:mt-0 text-center lg:text-3xl sm:text-2xl md:text-2xl  font-bold lg:text-primary md:text-white sm:text-white">
             Log in
           </h2>
           <div>
@@ -82,7 +82,7 @@ export default function Login() {
           </Button>
         </form>
         <div className="mt-4 text-sm">
-          <a href="/register" className="lg:text-gray-500 hover:text-teal-500 hover:underline  sm:text-white md:text-white sm:hover:text-black md:hover:text-black">Don't have a account? Register Here</a>
+          <a href="/register" className="lg:text-gray-500 lg:hover:text-teal-500 hover:underline  sm:text-white md:text-white sm:hover:text-black md:hover:text-black">Don't have a account? Register Here</a>
         </div>
       </div>
     </div>

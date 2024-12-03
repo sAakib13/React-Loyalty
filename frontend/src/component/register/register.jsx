@@ -29,19 +29,25 @@ const RegistrationForm = () => {
   }
 
   return (
-    <div className="h-screen flex">
-      <div className="w-1/2 bg-primary flex flex-col justify-center items-center text-white">
+    <div className="flex h-screen">
+      {/* Sidebar Section */}
+      <div className="flex lg:w-1/2 md:w-0 sm:w-0 flex-col items-center justify-center bg-primary text-white">
         <div className="text-center">
           <div className="mb-4">
             <img src={logo} alt="Logo" />
           </div>
         </div>
       </div>
-      <div className="w-1/2 flex flex-col justify-center items-center bg-white">
+      <div className="flex lg:w-1/2 md:w-[100%] sm:w-[100%] flex-col items-center justify-center lg:bg-white md:bg-primary sm:bg-primary" >
+        <div className="text-center">
+          <div className="mb-4 lg:w-0 md:w-[100%] sm:w-[100%]">
+            <img src={logo} alt="Logo" className="w-36 mx-auto" />
+          </div>
+        </div>
         <form className="w-full max-w-sm flex flex-col gap-6" onSubmit={handleSubmit}>
-          <h2 className="text-3xl font-bold text-primary text-center">Registration Form</h2>
+          <h2 className="md:mt-8 sm:mt-8 lg:mt-0 text-center lg:text-3xl sm:text-2xl md:text-2xl  font-bold lg:text-primary md:text-white sm:text-white">Registration Form</h2>
           <div>
-            <Label htmlFor="name" value="Name" />
+            <Label htmlFor="name" value="Name" className="lg:text-black sm:text-white md:text-white" />
             <TextInput
               type="text"
               id="name"
@@ -53,7 +59,7 @@ const RegistrationForm = () => {
             />
           </div>
           <div>
-            <Label htmlFor="email" value="Email"></Label>
+            <Label htmlFor="email" value="Email" className="lg:text-black sm:text-white md:text-white"></Label>
             <TextInput
               type="email"
               id="email"
@@ -65,7 +71,7 @@ const RegistrationForm = () => {
             />
           </div>
           <div>
-            <Label htmlFor="phone" value="Phone Number"></Label>
+            <Label htmlFor="phone" value="Phone Number" className="lg:text-black sm:text-white md:text-white"></Label>
             <TextInput
               type="tel"
               id="phone"
@@ -77,7 +83,7 @@ const RegistrationForm = () => {
             />
           </div>
           <div>
-            <Label htmlFor="dob" value="Birth Date"></Label>
+            <Label htmlFor="dob" value="Birth Date" className="lg:text-black sm:text-white md:text-white"></Label>
             <TextInput
               type="date"
               id="dob"
