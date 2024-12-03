@@ -20,7 +20,7 @@ h1 {
   line-height: 1.1;
 }
 
-button {
+/* button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -37,13 +37,17 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
+} */
 /* Custom autofill styling */
 input:-webkit-autofill {
-  background-color: #e0f2fe !important; /* Light blue background */
-  color: #000 !important;               /* Text color */
-  -webkit-box-shadow: 0 0 0px 1000px #fdfcfc inset !important; /* Override autofill background */
-  transition: background-color 5000s ease-in-out 0s; /* Ensure autofill stays styled */
+  background-color: #e0f2fe !important;
+  /* Light blue background */
+  color: #000 !important;
+  /* Text color */
+  -webkit-box-shadow: 0 0 0px 1000px #fdfcfc inset !important;
+  /* Override autofill background */
+  transition: background-color 5000s ease-in-out 0s;
+  /* Ensure autofill stays styled */
 }
 
 @media (prefers-color-scheme: light) {
@@ -51,9 +55,11 @@ input:-webkit-autofill {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }
