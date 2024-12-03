@@ -85,6 +85,52 @@ app.post("/validate-otp", async (req, res) => {
   }
 });
 
+app.post("/register-user", async (req, res) => {
+  const { phone_number, name, email, dob, age } = req.body;
+
+  const API_URL_ADD_USER =
+    "https://api.telerivet.com/v1/projects/PJb993879964086d72/services/SV70a0b59d483d613c/invoke";
+
+  console.log("Registering user:", { phone_number, name, email, dob, age });
+
+  try {
+    // Call the Telerivet API to add the user
+    const response = await axios.post(
+      API_URL_ADD_USER,
+      {
+        api_key: API_KEY,
+        context: "contact",
+        phone_number,
+        name,
+        variables: {
+          name,
+          email,
+          dob,
+          age,
+        },
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("User added successfully to Telerivet:", response.data);
+
+    // Respond with success
+    res.json({ success: true, message: "User registered successfully!" });
+  } catch (error) {
+    console.error(
+      "Error occurred:",
+      error.response ? error.response.data : error.message
+    );
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to register user" });
+  }
+});
+
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Backend server running on http://localhost:${PORT}`);
