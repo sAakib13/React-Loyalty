@@ -33,23 +33,29 @@ const OTP = () => {
 
   return (
     <div className="flex h-screen">
-      <div className="flex w-1/2 flex-col items-center justify-center bg-primary text-white">
+      {/* Sidebar Section */}
+      <div className="flex lg:w-1/2 md:w-0 sm:w-0 flex-col items-center justify-center bg-primary text-white">
         <div className="text-center">
-          <div className="mt-4">
-            <img src={logo} alt="logo"></img>
+          <div className="mb-4">
+            <img src={logo} alt="Logo" />
           </div>
         </div>
       </div>
-      <div className="flex w-1/2 flex-col items-center justify-center bg-white">
+      <div className="flex lg:w-1/2 md:w-[100%] sm:w-[100%] flex-col items-center justify-center lg:bg-white md:bg-primary sm:bg-primary" >
+        <div className="text-center">
+          <div className="mb-4 lg:w-0 md:w-[100%] sm:w-[100%]">
+            <img src={logo} alt="Logo" className="w-36 mx-auto" />
+          </div>
+        </div>
         <form
-          className="flex w-full max-w-sm flex-col gap-6"
+          className="flex lg:w-full max-w-sm flex-col gap-6"
           onSubmit={handleSubmit}
         >
-          <h2 className="text-center text-3xl font-bold text-primary">
+          <h2 className="md:mt-8 sm:mt-8 lg:mt-0 text-center lg:text-3xl sm:text-2xl md:text-2xl  font-bold lg:text-primary md:text-white sm:text-white">
             Enter Your OTP{" "}
           </h2>
           <div>
-            <Label htmlFor="otp" value="Enter the 7-digit OTP sent to you" />
+            <Label htmlFor="otp" value="Enter the 7-digit OTP sent to you" className="lg:text-black sm:text-white md:text-white" />
             <TextInput
               id="otp"
               type="otp"

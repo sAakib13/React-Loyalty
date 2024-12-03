@@ -23,7 +23,7 @@ module.exports = {
         huge: "68px",                     // Custom huge font size
       },
       screens: {
-        sm: '320px',
+        sm: '298px',
         md: '768px',
         lg: '1024px',
         xl: '1280px',
