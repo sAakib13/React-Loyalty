@@ -103,7 +103,7 @@ const RegistrationForm = () => {
             />
           </div>
           <div>
-            <Label htmlFor="age" value="Age" />
+            <Label htmlFor="age" value="Age" className="lg:text-black sm:text-white md:text-white"/>
             <TextInput
               type="number"
               id="age"
