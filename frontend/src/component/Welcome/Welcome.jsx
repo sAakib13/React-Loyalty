@@ -12,16 +12,16 @@ export default function Welcome() {
     };
 
     return (
-        <div className="h-screen flex flex-col justify-center items-center bg-gradient-to-br from-gray-50 to-gray-100 p-4">
+        <div className="h-screen flex flex-col justify-center items-center bg-gradient-to-br from-gray-50 to-gray-100 lg:p-4 md:p-2 sm:2">
 
             {/* Avatar and Dropdown Section */}
-            <div className="absolute top-4 right-4 flex items-center space-x-2">
+            <div className="absolute top-4 right-3 flex items-center space-x-2">
                 <Dropdown inline label={
                     <Avatar
                         img={user}
                         alt="User"
                         rounded
-                        className="w-8"
+                        className="lg:w-8 md:w-6 sm:w-6"
                     />
                 }>
                     <Dropdown.Header>
@@ -33,11 +33,11 @@ export default function Welcome() {
             </div>
 
             {/* Welcome Section */}
-            <h1 className="text-5xl font-extrabold text-primary mb-4">Hello User, Welcome!</h1>
-            <p className="text-lg text-gray-600 mb-6">Redeem Your Loyalty Points and Get Exciting Rewards</p>
+            <h1 className="lg:text-5xl font-extrabold text-primary mb-4 md:text-3xl sm:text-xl">Hello User, Welcome!</h1>
+            <p className="lg:text-lg text-gray-600 mb-6 md:text-md sm:text-sm">Redeem Your Loyalty Points and Get Exciting Rewards</p>
 
             {/* Loyalty Items Section */}
-            <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="grid lg:grid-cols-3 lg:gap-4 md:gap-3 sm:gap-2 mb-6 md:grid-cols-2 sm:grid-cols-1">
                 {[
                     { id: '1', name: 'Camera', points: "200" },
                     { id: '2', name: 'HeadPhones', points: "100" },
@@ -46,9 +46,9 @@ export default function Welcome() {
                     { id: '5', name: 'Mouse', points: "100" },
                     { id: '6', name: 'Movie Ticket', points: "50" }
                 ].map(item => (
-                    <div key={item.id} className="bg-primary text-white p-4 rounded-lg shadow-md hover:shadow-lg flex items-center space-x-2 mb-4">
+                    <div key={item.id} className="bg-primary text-white lg:p-4 md:p-2 sm:p-2 rounded-lg shadow-md hover:shadow-lg flex items-center space-x-2 mb-4">
                         <Checkbox id={item.id} />
-                        <label htmlFor={item.id} className="text-lg">{item.name} - {item.points} points</label>
+                        <label htmlFor={item.id} className="lg:text-lg md:text-md sm:text-sm">{item.name} - {item.points} points</label>
                     </div>
                 ))}
 
@@ -56,12 +56,12 @@ export default function Welcome() {
             </div>
 
             {/* Redeem Button */}
-            <Button className="bg-primary text-white font-semibold py-2 px-6 rounded-full mb-4">
+            <Button className="bg-primary text-white font-semibold py-2 px-6 rounded-full lg:mb-4 md:mb-2 sm:mb-1 lg:text-lg md:text-md sm:text-sm">
                 Redeem Now
             </Button>
 
             {/* Logout Button */}
-            <Button onClick={handleLogout} className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-full mb-4">
+            <Button onClick={handleLogout} className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-full lg:mb-4 md:mb-2 sm:mb-1 lg:text-lg md:text-md sm:text-sm">
                 Log Out
             </Button>
         </div>
