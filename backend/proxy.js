@@ -165,10 +165,45 @@ app.post("/register-user", async (req, res) => {
   }
 });
 
-app.post("/redemption"),
-  async (req, res) => {
-    console.log("hello");
-  };
+app.post("/redemption", async (req, res) => {
+  const { phone_number, currentPoints, selectedItems } = req.body;
+
+  console.log("Received Redemption Request:", {
+    phone_number,
+    currentPoints,
+    selectedItems,
+  });
+
+  try {
+    // (Optional) Process the redemption data here
+    // Example: Store or validate the redemption in your database
+
+    // Then call the external API (e.g., Telerivet) for further processing
+    const response = await axios.post(
+      "https://api.telerivet.com/v1/projects/PJb993879964086d72/services/SV98e376b61115caec/invoke",
+      {
+        api_key: API_KEY, // Replace with your actual API key
+        context: "contact",
+        phone_number,
+        currentPoints,
+        selectedItems,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("External API response:", response.data);
+
+    // Send success response
+    res.json({ success: true, message: "Redemption successful!" });
+  } catch (error) {
+    console.error("Error during redemption:", error);
+    res.status(500).json({ success: false, message: "Redemption failed." });
+  }
+});
 
 const PORT = 5000;
 app.listen(PORT, () => {

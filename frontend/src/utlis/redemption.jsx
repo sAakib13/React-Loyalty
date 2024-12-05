@@ -1,14 +1,19 @@
 import axios from "axios";
 
-export const registerUser = async ({ phone_number, name }) => {
+export const redemption = async ({
+  phone_number,
+  currentPoints,
+  selectedItems,
+}) => {
   try {
     const response = await axios.post("http://localhost:5000/redemption", {
       phone_number,
-      name,
+      currentPoints,
+      selectedItems,
     });
     return response.data;
   } catch (error) {
-    console.error("Error registering user:", error);
+    console.error("Error during redemption:", error);
     throw error;
   }
 };

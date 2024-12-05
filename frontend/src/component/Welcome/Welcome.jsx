@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import userImage from "../../assets/user.png";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { redemption } from "../../utlis/redemption"; // Adjust the path as needed
 
 export default function Welcome() {
   const navigate = useNavigate();
@@ -19,12 +20,11 @@ export default function Welcome() {
       try {
         const contactId = "CT4dd4e07a77c5ffef"; // Replace with your actual contact_id
         const response = await axios.get(`http://localhost:5000/api/user-data`, {
-          params: { contact_id: contactId }, // Pass contact_id as a query parameter
+          params: { contact_id: contactId },
         });
 
         console.log("Response Data:", response.data);
 
-        // Extract and set the user data from the API response
         if (response.data.data && response.data.data.length > 0) {
           setUserData(response.data.data[0]);
         } else {
@@ -34,7 +34,7 @@ export default function Welcome() {
         setError("Failed to fetch user data");
         console.error("Error:", err.response ? err.response.data : err.message);
       } finally {
-        setLoading(false); // Ensure loading state is updated
+        setLoading(false);
       }
     };
 
@@ -62,38 +62,30 @@ export default function Welcome() {
   const handleRedemption = async (event) => {
     event.preventDefault();
 
-    // Calculate the total points for selected items
     const totalPoints = selectedItems.reduce((acc, item) => acc + item.points, 0);
 
-    // Check if user has enough points
     if (userData?.vars?.points < totalPoints) {
       alert("Insufficient points to redeem the selected items.");
       return;
     }
 
-    // try {
-    //   const redemptionPayload = {
-    //     contact_id: userData.contact_id,
-    //     items: selectedItems.map((item) => item.id),
-    //   };
+    try {
+      const response = await redemption({
+        phone_number: userData?.from_number,
+        currentPoints: userData?.vars?.points,
+        selectedItems,
+      });
 
-    //   const response = await axios.post(
-    //     "https://api.telerivet.com/v1/projects/PJb993879964086d72/services/SV98e376b61115caec/invoke",
-    //     redemptionPayload,
-    //     {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //     }
-    //   );
-
-    //   console.log("Redemption Response:", response.data);
-    //   alert("Redemption successful!");
-    //   // Optionally, refresh the user data or update the points locally
-    // } catch (err) {
-    //   console.error("Error during redemption:", err.response ? err.response.data : err.message);
-    //   alert("Failed to complete redemption.");
-    // }
+      console.log("Redemption response:", response);
+      alert("Redemption successful!");
+      // Optionally, refresh user data to update points
+    } catch (err) {
+      console.error(
+        "Error during redemption:",
+        err.response ? err.response.data : err.message
+      );
+      alert("Failed to complete redemption.");
+    }
   };
 
   if (loading) return <p>Loading...</p>;
@@ -101,7 +93,6 @@ export default function Welcome() {
 
   return (
     <div className="sm:2 flex h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 md:p-2 lg:p-4">
-      {/* Avatar and Dropdown Section */}
       <div className="absolute right-3 top-4 flex items-center space-x-2">
         <Dropdown
           inline
@@ -127,42 +118,30 @@ export default function Welcome() {
           </Dropdown.Header>
         </Dropdown>
       </div>
-
-      {/* Welcome Section */}
       <h1 className="mb-4 font-extrabold text-primary sm:text-xl md:text-3xl lg:text-5xl">
         Hello {userData?.vars?.email.split("@")[0] || "User"}, Welcome!
       </h1>
-
-      {/* User Details Section */}
-      <div className="mb-6 flex flex-col items-center space-y-2 text-gray-600 md:text-md sm:text-sm lg:text-lg">
+      <div className="md:text-md mb-6 flex flex-col items-center space-y-2 text-gray-600 sm:text-sm lg:text-lg">
         <p>
           <span className="font-semibold">Age:</span> {userData?.vars?.age || "N/A"}
         </p>
         <p>
-          <span className="font-semibold">Date of Birth:</span>{" "}
-          {userData?.vars?.dob || "N/A"}
+          <span className="font-semibold">Date of Birth:</span> {userData?.vars?.dob || "N/A"}
         </p>
         <p>
           <span className="font-semibold">Email:</span> {userData?.vars?.email || "N/A"}
         </p>
         <p>
-          <span className="font-semibold">Loyalty Points:</span>{" "}
-          {userData?.vars?.points || 0}
+          <span className="font-semibold">Loyalty Points:</span> {userData?.vars?.points || 0}
         </p>
         <p>
-          <span className="font-semibold">Phone Number:</span>{" "}
-          {userData?.from_number || "N/A"}
+          <span className="font-semibold">Phone Number:</span> {userData?.from_number || "N/A"}
         </p>
       </div>
-
-      {/* Redeem Your Loyalty Points Section */}
       <p className="md:text-md mb-6 text-gray-600 sm:text-sm lg:text-lg">
         Redeem Your Loyalty Points and Get Exciting Rewards
       </p>
-
-      {/* Form for Redeeming Items */}
       <form onSubmit={handleRedemption}>
-        {/* Loyalty Items Section */}
         <div className="mb-6 grid sm:grid-cols-1 sm:gap-2 md:grid-cols-2 md:gap-3 lg:grid-cols-3 lg:gap-4">
           {[
             { id: "1", name: "Camera", points: 200 },
@@ -180,17 +159,12 @@ export default function Welcome() {
                 id={item.id}
                 onChange={() => handleCheckboxChange(item.id, item.points)}
               />
-              <label
-                htmlFor={item.id}
-                className="md:text-md sm:text-sm lg:text-lg"
-              >
+              <label htmlFor={item.id} className="md:text-md sm:text-sm lg:text-lg">
                 {item.name} - {item.points} points
               </label>
             </div>
           ))}
         </div>
-
-        {/* Redeem Button */}
         <Button
           type="submit"
           className="md:text-md rounded-full bg-primary px-6 py-2 font-semibold text-white sm:mb-1 sm:text-sm md:mb-2 lg:mb-4 lg:text-lg"
@@ -198,8 +172,6 @@ export default function Welcome() {
           Redeem Now
         </Button>
       </form>
-
-      {/* Logout Button */}
       <Button
         onClick={handleLogout}
         className="md:text-md rounded-full bg-gray-600 px-6 py-2 font-semibold text-white hover:bg-gray-700 sm:mb-1 sm:text-sm md:mb-2 lg:mb-4 lg:text-lg"
