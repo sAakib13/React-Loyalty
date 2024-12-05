@@ -56,8 +56,8 @@ const RegistrationForm = () => {
             <img src={logo} alt="Logo" className="w-36 mx-auto" />
           </div>
         </div>
-        <form className="w-full max-w-sm flex flex-col lg:gap-4 md:gap-3 sm:gap-3" onSubmit={handleSubmit}>
-          <h2 className="md:mt-2 sm:mt-2 lg:mt-0 text-center lg:text-3xl sm:text-2xl md:text-2xl  font-bold lg:text-primary md:text-white sm:text-white">Registration Form</h2>
+        <form className="w-full max-w-sm flex flex-col lg:gap-4 md:gap-2 md:px-4 sm:px-7" onSubmit={handleSubmit}>
+          <h2 className="md:mt-7 sm:mt-7 lg:mt-0 text-center lg:text-3xl sm:text-2xl md:text-2xl  font-bold lg:text-primary md:text-white sm:text-white">Registration Form</h2>
           <div>
             <Label htmlFor="name" value="Name" className="lg:text-black sm:text-white md:text-white" />
             <TextInput
@@ -113,9 +113,12 @@ const RegistrationForm = () => {
               required
             />
           </div>
-          <Button type="submit" className="bg-primary hover:bg-teal-600">
+          <Button type="submit" className="bg-primary hover:bg-teal-600 sm:mt-4">
             Register
           </Button>
+          <div className="mt-2 text-sm text-center">
+            <a href="/login" className="lg:text-gray-500 lg:hover:text-teal-500 hover:underline  sm:text-white md:text-white sm:hover:text-black md:hover:text-black">Already have a account? Login Here</a>
+          </div>
           {message.text && (
             <div
               className={`mt-4 rounded-lg p-2 text-center text-white ${message.type === "success" ? "bg-green-600" : "bg-red-600"
