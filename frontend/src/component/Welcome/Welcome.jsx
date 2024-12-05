@@ -1,69 +1,154 @@
 "use client";
 import { Button, Checkbox, Dropdown, Avatar } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
-import user from "../../assets/user.png"
+import userImage from "../../assets/user.png";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function Welcome() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleLogout = (event) => {
-        event.preventDefault();
-        navigate("/");
+  // State hooks for user data, loading, and errors
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const contactId = "CT4dd4e07a77c5ffef"; // Replace with your actual contact_id
+        const response = await axios.get(`http://localhost:5000/api/user-data`, {
+          params: { contact_id: contactId }, // Pass contact_id as a query parameter
+        });
+
+        console.log("Response Data:", response.data);
+
+        // Extract and set the user data from the API response
+        if (response.data.data && response.data.data.length > 0) {
+          setUserData(response.data.data[0]);
+        } else {
+          throw new Error("No user data found.");
+        }
+      } catch (err) {
+        setError("Failed to fetch user data");
+        console.error("Error:", err.response ? err.response.data : err.message);
+      } finally {
+        setLoading(false); // Ensure loading state is updated
+      }
     };
 
-    return (
-        <div className="h-screen flex flex-col justify-center items-center bg-gradient-to-br from-gray-50 to-gray-100 lg:p-4 md:p-2 sm:2">
+    fetchData();
+  }, []);
 
-            {/* Avatar and Dropdown Section */}
-            <div className="absolute top-4 right-3 flex items-center space-x-2">
-                <Dropdown inline label={
-                    <Avatar
-                        img={user}
-                        alt="User"
-                        rounded
-                        className="lg:w-8 md:w-6 sm:w-6"
-                    />
-                }>
-                    <Dropdown.Header>
-                        <span className="block text-sm font-medium">Username</span>
-                        <span className="block text-sm text-gray-500">xyz@gmail.com</span>
-                        <span className="block text-sm text-gray-500">Loyalty Points: 100</span>
-                    </Dropdown.Header>
-                </Dropdown>
-            </div>
+  const handleLogout = (event) => {
+    event.preventDefault();
+    navigate("/");
+  };
 
-            {/* Welcome Section */}
-            <h1 className="lg:text-5xl font-extrabold text-primary mb-4 md:text-3xl sm:text-xl">Hello User, Welcome!</h1>
-            <p className="lg:text-lg text-gray-600 mb-6 md:text-md sm:text-sm">Redeem Your Loyalty Points and Get Exciting Rewards</p>
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
 
-            {/* Loyalty Items Section */}
-            <div className="grid lg:grid-cols-3 lg:gap-4 md:gap-3 sm:gap-2 mb-6 md:grid-cols-2 sm:grid-cols-1">
-                {[
-                    { id: '1', name: 'Camera', points: "200" },
-                    { id: '2', name: 'HeadPhones', points: "100" },
-                    { id: '3', name: 'Television', points: "1000" },
-                    { id: '4', name: 'SmartPhones', points: "300" },
-                    { id: '5', name: 'Mouse', points: "100" },
-                    { id: '6', name: 'Movie Ticket', points: "50" }
-                ].map(item => (
-                    <div key={item.id} className="bg-primary text-white lg:p-4 md:p-2 sm:p-2 rounded-lg shadow-md hover:shadow-lg flex items-center space-x-2 mb-4">
-                        <Checkbox id={item.id} />
-                        <label htmlFor={item.id} className="lg:text-lg md:text-md sm:text-sm">{item.name} - {item.points} points</label>
-                    </div>
-                ))}
+  return (
+    <div className="sm:2 flex h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 md:p-2 lg:p-4">
+      {/* Avatar and Dropdown Section */}
+      <div className="absolute right-3 top-4 flex items-center space-x-2">
+        <Dropdown
+          inline
+          label={
+            <Avatar
+              img={userImage}
+              alt="User"
+              rounded
+              className="sm:w-6 md:w-6 lg:w-8"
+            />
+          }
+        >
+          <Dropdown.Header>
+            <span className="block text-sm font-medium">
+              {userData?.vars?.email || "Username"}
+            </span>
+            <span className="block text-sm text-gray-500">
+              {userData?.vars?.email || "xyz@gmail.com"}
+            </span>
+            <span className="block text-sm text-gray-500">
+              Loyalty Points: {userData?.vars?.points || 0}
+            </span>
+          </Dropdown.Header>
+        </Dropdown>
+      </div>
 
+      {/* Welcome Section */}
+      <h1 className="mb-4 font-extrabold text-primary sm:text-xl md:text-3xl lg:text-5xl">
+        Hello {userData?.vars?.email.split("@")[0] || "User"}, Welcome!
+      </h1>
 
-            </div>
+      {/* User Details Section */}
+      <div className="mb-6 flex flex-col items-center space-y-2 text-gray-600 md:text-md sm:text-sm lg:text-lg">
+        <p>
+          <span className="font-semibold">Age:</span> {userData?.vars?.age || "N/A"}
+        </p>
+        <p>
+          <span className="font-semibold">Date of Birth:</span>{" "}
+          {userData?.vars?.dob || "N/A"}
+        </p>
+        <p>
+          <span className="font-semibold">Email:</span> {userData?.vars?.email || "N/A"}
+        </p>
+        <p>
+          <span className="font-semibold">Loyalty Points:</span>{" "}
+          {userData?.vars?.points || 0}
+        </p>
+        <p>
+          <span className="font-semibold">Phone Number:</span>{" "}
+          {userData?.from_number || "N/A"}
+        </p>
+      </div>
 
-            {/* Redeem Button */}
-            <Button className="bg-primary text-white font-semibold py-2 px-6 rounded-full lg:mb-4 md:mb-2 sm:mb-1 lg:text-lg md:text-md sm:text-sm">
-                Redeem Now
-            </Button>
+      {/* Redeem Your Loyalty Points Section */}
+      <p className="md:text-md mb-6 text-gray-600 sm:text-sm lg:text-lg">
+        Redeem Your Loyalty Points and Get Exciting Rewards
+      </p>
 
-            {/* Logout Button */}
-            <Button onClick={handleLogout} className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-full lg:mb-4 md:mb-2 sm:mb-1 lg:text-lg md:text-md sm:text-sm">
-                Log Out
-            </Button>
-        </div>
-    );
+      {/* Loyalty Items Section */}
+      <div className="mb-6 grid sm:grid-cols-1 sm:gap-2 md:grid-cols-2 md:gap-3 lg:grid-cols-3 lg:gap-4">
+        {[
+          { id: "1", name: "Camera", points: 200 },
+          { id: "2", name: "HeadPhones", points: 100 },
+          { id: "3", name: "Television", points: 1000 },
+          { id: "4", name: "SmartPhones", points: 300 },
+          { id: "5", name: "Mouse", points: 100 },
+          { id: "6", name: "Movie Ticket", points: 50 },
+        ].map((item) => (
+          <div
+            key={item.id}
+            className="mb-4 flex items-center space-x-2 rounded-lg bg-primary text-white shadow-md hover:shadow-lg sm:p-2 md:p-2 lg:p-4"
+          >
+            <Checkbox id={item.id} />
+            <label
+              htmlFor={item.id}
+              className="md:text-md sm:text-sm lg:text-lg"
+            >
+              {item.name} - {item.points} points
+            </label>
+          </div>
+        ))}
+      </div>
+
+      {/* Redeem Button */}
+      <Button
+        className="md:text-md rounded-full bg-primary px-6 py-2 font-semibold text-white sm:mb-1 sm:text-sm md:mb-2 lg:mb-4 lg:text-lg"
+        disabled={userData?.vars?.points < 50} // Disable if not enough points
+      >
+        Redeem Now
+      </Button>
+
+      {/* Logout Button */}
+      <Button
+        onClick={handleLogout}
+        className="md:text-md rounded-full bg-gray-600 px-6 py-2 font-semibold text-white hover:bg-gray-700 sm:mb-1 sm:text-sm md:mb-2 lg:mb-4 lg:text-lg"
+      >
+        Log Out
+      </Button>
+    </div>
+  );
 }
