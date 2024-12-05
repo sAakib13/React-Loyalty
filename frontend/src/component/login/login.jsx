@@ -51,7 +51,7 @@ export default function Login() {
           </div>
         </div>
         <form
-          className="flex w-full max-w-sm flex-col gap-6"
+          className="flex w-full max-w-sm flex-col gap-6 md:px-4 sm:px-7"
           onSubmit={handleSubmit}
         >
           <h2 className="md:mt-8 sm:mt-8 lg:mt-0 text-center lg:text-3xl sm:text-2xl md:text-2xl  font-bold lg:text-primary md:text-white sm:text-white">
