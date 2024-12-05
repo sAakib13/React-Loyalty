@@ -165,6 +165,11 @@ app.post("/register-user", async (req, res) => {
   }
 });
 
+app.post("/redemption"),
+  async (req, res) => {
+    console.log("hello");
+  };
+
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Backend server running on http://localhost:${PORT}`);

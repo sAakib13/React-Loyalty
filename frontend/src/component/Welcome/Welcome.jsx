@@ -12,6 +12,7 @@ export default function Welcome() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,6 +44,56 @@ export default function Welcome() {
   const handleLogout = (event) => {
     event.preventDefault();
     navigate("/");
+  };
+
+  const handleCheckboxChange = (id, points) => {
+    const updatedItems = [...selectedItems];
+    const index = updatedItems.findIndex((item) => item.id === id);
+
+    if (index > -1) {
+      updatedItems.splice(index, 1);
+    } else {
+      updatedItems.push({ id, points });
+    }
+
+    setSelectedItems(updatedItems);
+  };
+
+  const handleRedemption = async (event) => {
+    event.preventDefault();
+
+    // Calculate the total points for selected items
+    const totalPoints = selectedItems.reduce((acc, item) => acc + item.points, 0);
+
+    // Check if user has enough points
+    if (userData?.vars?.points < totalPoints) {
+      alert("Insufficient points to redeem the selected items.");
+      return;
+    }
+
+    // try {
+    //   const redemptionPayload = {
+    //     contact_id: userData.contact_id,
+    //     items: selectedItems.map((item) => item.id),
+    //   };
+
+    //   const response = await axios.post(
+    //     "https://api.telerivet.com/v1/projects/PJb993879964086d72/services/SV98e376b61115caec/invoke",
+    //     redemptionPayload,
+    //     {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //     }
+    //   );
+
+    //   console.log("Redemption Response:", response.data);
+    //   alert("Redemption successful!");
+    //   // Optionally, refresh the user data or update the points locally
+    // } catch (err) {
+    //   console.error("Error during redemption:", err.response ? err.response.data : err.message);
+    //   alert("Failed to complete redemption.");
+    // }
   };
 
   if (loading) return <p>Loading...</p>;
@@ -109,38 +160,44 @@ export default function Welcome() {
         Redeem Your Loyalty Points and Get Exciting Rewards
       </p>
 
-      {/* Loyalty Items Section */}
-      <div className="mb-6 grid sm:grid-cols-1 sm:gap-2 md:grid-cols-2 md:gap-3 lg:grid-cols-3 lg:gap-4">
-        {[
-          { id: "1", name: "Camera", points: 200 },
-          { id: "2", name: "HeadPhones", points: 100 },
-          { id: "3", name: "Television", points: 1000 },
-          { id: "4", name: "SmartPhones", points: 300 },
-          { id: "5", name: "Mouse", points: 100 },
-          { id: "6", name: "Movie Ticket", points: 50 },
-        ].map((item) => (
-          <div
-            key={item.id}
-            className="mb-4 flex items-center space-x-2 rounded-lg bg-primary text-white shadow-md hover:shadow-lg sm:p-2 md:p-2 lg:p-4"
-          >
-            <Checkbox id={item.id} />
-            <label
-              htmlFor={item.id}
-              className="md:text-md sm:text-sm lg:text-lg"
+      {/* Form for Redeeming Items */}
+      <form onSubmit={handleRedemption}>
+        {/* Loyalty Items Section */}
+        <div className="mb-6 grid sm:grid-cols-1 sm:gap-2 md:grid-cols-2 md:gap-3 lg:grid-cols-3 lg:gap-4">
+          {[
+            { id: "1", name: "Camera", points: 200 },
+            { id: "2", name: "HeadPhones", points: 100 },
+            { id: "3", name: "Television", points: 1000 },
+            { id: "4", name: "SmartPhones", points: 300 },
+            { id: "5", name: "Mouse", points: 100 },
+            { id: "6", name: "Movie Ticket", points: 50 },
+          ].map((item) => (
+            <div
+              key={item.id}
+              className="mb-4 flex items-center space-x-2 rounded-lg bg-primary text-white shadow-md hover:shadow-lg sm:p-2 md:p-2 lg:p-4"
             >
-              {item.name} - {item.points} points
-            </label>
-          </div>
-        ))}
-      </div>
+              <Checkbox
+                id={item.id}
+                onChange={() => handleCheckboxChange(item.id, item.points)}
+              />
+              <label
+                htmlFor={item.id}
+                className="md:text-md sm:text-sm lg:text-lg"
+              >
+                {item.name} - {item.points} points
+              </label>
+            </div>
+          ))}
+        </div>
 
-      {/* Redeem Button */}
-      <Button
-        className="md:text-md rounded-full bg-primary px-6 py-2 font-semibold text-white sm:mb-1 sm:text-sm md:mb-2 lg:mb-4 lg:text-lg"
-        disabled={userData?.vars?.points < 50} // Disable if not enough points
-      >
-        Redeem Now
-      </Button>
+        {/* Redeem Button */}
+        <Button
+          type="submit"
+          className="md:text-md rounded-full bg-primary px-6 py-2 font-semibold text-white sm:mb-1 sm:text-sm md:mb-2 lg:mb-4 lg:text-lg"
+        >
+          Redeem Now
+        </Button>
+      </form>
 
       {/* Logout Button */}
       <Button
