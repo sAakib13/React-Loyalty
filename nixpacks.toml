@@ -1,4 +1,14 @@
 [phases]
-setup = "cd backend && npm install && cd ../frontend && npm install"
-build = "cd frontend && npm run build"
-start = "cd backend && npm start"
+[phases.setup]
+cmds = [
+  "cd backend && npm install",
+  "cd ../frontend && npm install"
+]
+
+[phases.build]
+cmds = [
+  "cd frontend && npm run build"
+]
+
+[phases.start]
+cmd = "cd backend && npm start"
