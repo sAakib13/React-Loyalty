@@ -6,6 +6,14 @@ const app = express();
 app.use(cors()); // Enable CORS
 app.use(express.json()); // Parse JSON requests
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "frontend/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend/dist", "index.html"));
+  });
+}
+
 const FETCH_USER_DATA_URL =
   "https://api.telerivet.com/v1/projects/PJb993879964086d72/tables/DT932fc0bd7948618d/rows";
 
@@ -205,7 +213,7 @@ app.post("/redemption", async (req, res) => {
   }
 });
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000; // Use Railway's PORT or default to 5000
 app.listen(PORT, () => {
   console.log(`Backend server running on http://localhost:${PORT}`);
 });
