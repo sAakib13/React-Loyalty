@@ -6,9 +6,43 @@ const app = express();
 app.use(cors()); // Enable CORS
 app.use(express.json()); // Parse JSON requests
 
+const FETCH_USER_DATA_URL =
+  "https://api.telerivet.com/v1/projects/PJb993879964086d72/tables/DT932fc0bd7948618d/rows";
+
 const API_URL =
   "https://api.telerivet.com/v1/projects/PJb993879964086d72/services/SVa4c8ef67ab98ee8c/invoke";
+
 const API_KEY = "maDfO_xfsRc3VEH7Dzzi7mll9slFHTgELpMK";
+
+app.get("/api/user-data", async (req, res) => {
+  const { contact_id } = req.query; // Expect contact_id to be passed as a query parameter
+
+  console.log("Fetching user data for contact_id:", contact_id);
+
+  try {
+    const response = await axios.get(
+      `${FETCH_USER_DATA_URL}?contact_id=${contact_id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Basic ${Buffer.from(`${API_KEY}:`).toString(
+            "base64"
+          )}`,
+        },
+      }
+    );
+
+    console.log("Fetched User Data:", response.data); // Log the response data for debugging
+
+    res.json(response.data); // Forward the API response to the client
+  } catch (error) {
+    console.error(
+      "Error fetching user data:",
+      error.response ? error.response.data : error.message
+    );
+    res.status(500).json({ error: "Failed to fetch user data" });
+  }
+});
 
 app.post("/generate-otp", async (req, res) => {
   const { phone_number } = req.body;
