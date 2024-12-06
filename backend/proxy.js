@@ -14,13 +14,13 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-const FETCH_USER_DATA_URL =
-  "https://api.telerivet.com/v1/projects/PJb993879964086d72/tables/DT932fc0bd7948618d/rows";
-
 const API_URL =
   "https://api.telerivet.com/v1/projects/PJb993879964086d72/services/SVa4c8ef67ab98ee8c/invoke";
 
 const API_KEY = "maDfO_xfsRc3VEH7Dzzi7mll9slFHTgELpMK";
+
+const FETCH_USER_DATA_URL =
+  "https://api.telerivet.com/v1/projects/PJb993879964086d72/tables/DT932fc0bd7948618d/rows";
 
 app.get("/api/user-data", async (req, res) => {
   const { contact_id } = req.query; // Expect contact_id to be passed as a query parameter
@@ -49,6 +49,38 @@ app.get("/api/user-data", async (req, res) => {
       error.response ? error.response.data : error.message
     );
     res.status(500).json({ error: "Failed to fetch user data" });
+  }
+});
+
+const FETCH_ITEMS_DATA_URL =
+  "https://api.telerivet.com/v1/projects/PJb993879964086d72/tables/DT2604fb24df89fbf2/rows";
+
+app.get("/api/get-items", async (req, res) => {
+  console.log("Fetching items data...");
+
+  try {
+    const response = await axios.get(FETCH_ITEMS_DATA_URL, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Basic ${Buffer.from(`${API_KEY}:`).toString("base64")}`,
+      },
+    });
+
+    console.log("Fetched Items Data:", response.data);
+
+    const formattedData = response.data.data.map((item) => ({
+      id: item.vars.id,
+      item: item.vars.item,
+      points: item.vars.points,
+    }));
+
+    res.json(formattedData);
+  } catch (error) {
+    console.error(
+      "Error fetching items data:",
+      error.response ? error.response.data : error.message
+    );
+    res.status(500).json({ error: "Failed to fetch items data" });
   }
 });
 

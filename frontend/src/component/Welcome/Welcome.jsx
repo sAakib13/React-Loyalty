@@ -1,4 +1,5 @@
 "use client";
+
 import { Button, Checkbox, Dropdown, Avatar } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import userImage from "../../assets/user.png";
@@ -9,12 +10,14 @@ import { redemption } from "../../utlis/redemption"; // Adjust the path as neede
 export default function Welcome() {
   const navigate = useNavigate();
 
-  // State hooks for user data, loading, and errors
+  // State hooks for user data, loading, errors, selected items, and available items
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [items, setItems] = useState([]);
 
+  // Fetch user data on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -44,26 +47,44 @@ export default function Welcome() {
     fetchData();
   }, []);
 
+  // Fetch items for redemption on component mount
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/get-items`);
+        setItems(response.data); // Update state with the fetched items
+      } catch (error) {
+        console.error("Error fetching items:", error);
+        setError("Failed to fetch items");
+      }
+    };
+
+    fetchItems();
+  }, []);
+
+  // Handle logout button click
   const handleLogout = (event) => {
     event.preventDefault();
     navigate("/");
   };
 
+  // Handle checkbox change for selecting items
   const handleCheckboxChange = (id, item, points) => {
     const updatedItems = [...selectedItems];
-    const index = updatedItems.findIndex((item) => item.id === id);
+    const index = updatedItems.findIndex((selected) => selected.id === id);
 
     if (index > -1) {
-      // If the item already exists in the array, remove it
+      // Remove item if already selected
       updatedItems.splice(index, 1);
     } else {
-      // If the item doesn't exist, add it
+      // Add item if not already selected
       updatedItems.push({ id, item, points });
     }
 
     setSelectedItems(updatedItems);
   };
 
+  // Handle redemption submission
   const handleRedemption = async (event) => {
     event.preventDefault();
 
@@ -96,11 +117,14 @@ export default function Welcome() {
     }
   };
 
+  // Render loading or error state
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
+  // Main return block
   return (
     <div className="sm:2 flex h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 md:p-2 lg:p-4">
+      {/* User Dropdown */}
       <div className="absolute right-3 top-4 flex items-center space-x-2">
         <Dropdown
           inline
@@ -126,9 +150,13 @@ export default function Welcome() {
           </Dropdown.Header>
         </Dropdown>
       </div>
+
+      {/* Welcome Section */}
       <h1 className="mb-4 font-extrabold text-primary sm:text-xl md:text-3xl lg:text-5xl">
         Hello {userData?.vars?.email.split("@")[0] || "User"}, Welcome!
       </h1>
+
+      {/* User Details */}
       <div className="md:text-md mb-6 flex flex-col items-center space-y-2 text-gray-600 sm:text-sm lg:text-lg">
         <p>
           <span className="font-semibold">Age:</span>{" "}
@@ -151,32 +179,31 @@ export default function Welcome() {
           {userData?.from_number || "N/A"}
         </p>
       </div>
+
       <p className="md:text-md mb-6 text-gray-600 sm:text-sm lg:text-lg">
         Redeem Your Loyalty Points and Get Exciting Rewards
       </p>
-      <form onSubmit={handleRedemption} className="text-center flex items-center flex-col justify-center">
+
+      {/* Redemption Form */}
+      <form
+        onSubmit={handleRedemption}
+        className="flex flex-col items-center justify-center text-center"
+      >
         <div className="mb-6 grid sm:grid-cols-1 sm:gap-2 md:grid-cols-2 md:gap-3 lg:grid-cols-3 lg:gap-4">
-          {[
-            { id: "1", item: "Camera", points: 200 },
-            { id: "2", item: "HeadPhones", points: 100 },
-            { id: "3", item: "Television", points: 1000 },
-            { id: "4", item: "SmartPhones", points: 300 },
-            { id: "5", item: "Mouse", points: 100 },
-            { id: "6", item: "Movie Ticket", points: 50 },
-          ].map((item) => (
+          {items.map((item) => (
             <div
               key={item.id}
               className="mb-4 flex items-center space-x-2 rounded-lg bg-primary text-white shadow-md hover:shadow-lg sm:p-2 md:p-2 lg:p-4"
             >
               <Checkbox
-                id={item.id}
+                id={item.id.toString()}
                 onChange={() =>
                   handleCheckboxChange(item.id, item.item, item.points)
                 }
               />
               <label
-                htmlFor={item.id}
-                className="md:text-md sm:text-sm lg:text-lg uppercase"
+                htmlFor={item.id.toString()}
+                className="md:text-md uppercase sm:text-sm lg:text-lg"
               >
                 {item.item} - {item.points} points
               </label>
@@ -190,6 +217,8 @@ export default function Welcome() {
           Redeem Now
         </Button>
       </form>
+
+      {/* Logout Button */}
       <Button
         onClick={handleLogout}
         className="md:text-md rounded-full bg-gray-600 px-6 py-2 font-semibold text-white hover:bg-gray-700 sm:mb-1 sm:text-sm md:mb-2 lg:mb-4 lg:text-lg"
