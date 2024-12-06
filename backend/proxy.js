@@ -22,6 +22,37 @@ const API_KEY = "maDfO_xfsRc3VEH7Dzzi7mll9slFHTgELpMK";
 const FETCH_USER_DATA_URL =
   "https://api.telerivet.com/v1/projects/PJb993879964086d72/tables/DT932fc0bd7948618d/rows";
 
+// app.get("/api/get-contact-id", async (req, res) => {
+//   const { phoneNumber } = req.query; // Extract phoneNumber from query parameters
+//   console.log("Fetching contact ID for phone number:", phoneNumber);
+
+//   if (!phoneNumber) {
+//     return res.status(400).json({ error: "Phone number is required" });
+//   }
+
+//   try {
+//     const response = await axios.get(TELERIVET_API_URL, {
+//       params: { phone_number: phoneNumber },
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Basic ${Buffer.from(`${API_KEY}:`).toString("base64")}`,
+//       },
+//     });
+
+//     console.log("Fetched Contact Data:", response.data);
+
+//     // Adjust based on the response structure from Telerivet
+//     const contactId = response.data.contact_id;
+//     res.json({ contactId });
+//   } catch (error) {
+//     console.error(
+//       "Error fetching contact ID:",
+//       error.response ? error.response.data : error.message
+//     );
+//     res.status(500).json({ error: "Failed to fetch contact ID" });
+//   }
+// });
+
 app.get("/api/user-data", async (req, res) => {
   const { contact_id } = req.query; // Expect contact_id to be passed as a query parameter
 
