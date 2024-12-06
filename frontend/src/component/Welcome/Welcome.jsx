@@ -152,32 +152,36 @@ export default function Welcome() {
       </div>
 
       {/* Welcome Section */}
-      <h1 className="mb-4 font-extrabold text-primary sm:text-xl md:text-3xl lg:text-5xl">
+      <h1 className="mb-6 font-extrabold text-primary sm:text-2xl md:text-4xl lg:text-5xl">
         Hello {userData?.vars?.email.split("@")[0] || "User"}, Welcome!
       </h1>
 
       {/* User Details */}
-      <div className="md:text-md mb-6 flex flex-col items-center space-y-2 text-gray-600 sm:text-sm lg:text-lg">
-        <p>
-          <span className="font-semibold">Age:</span>{" "}
-          {userData?.vars?.age || "N/A"}
-        </p>
-        <p>
-          <span className="font-semibold">Date of Birth:</span>{" "}
-          {userData?.vars?.dob || "N/A"}
-        </p>
-        <p>
-          <span className="font-semibold">Email:</span>{" "}
-          {userData?.vars?.email || "N/A"}
-        </p>
-        <p>
-          <span className="font-semibold">Loyalty Points:</span>{" "}
-          {userData?.vars?.points || 0}
-        </p>
-        <p>
-          <span className="font-semibold">Phone Number:</span>{" "}
-          {userData?.from_number || "N/A"}
-        </p>
+      <div className="md:text-md mb-8 w-full max-w-md rounded-lg bg-white p-6 shadow-lg transition-shadow hover:shadow-xl sm:text-sm lg:text-lg">
+        <div className="space-y-3 text-center text-gray-800">
+          <p>
+            <span className="font-semibold text-primary">Age:</span>{" "}
+            {userData?.vars?.age || "N/A"}
+          </p>
+          <p>
+            <span className="font-semibold text-primary">Date of Birth:</span>{" "}
+            {userData?.vars?.dob || "N/A"}
+          </p>
+          <p>
+            <span className="font-semibold text-primary">Email:</span>{" "}
+            {userData?.vars?.email || "N/A"}
+          </p>
+          <p>
+            <span className="font-semibold text-primary">Loyalty Points:</span>{" "}
+            <span className="text-secondary font-bold">
+              {userData?.vars?.points || 0}
+            </span>
+          </p>
+          <p>
+            <span className="font-semibold text-primary">Phone Number:</span>{" "}
+            {userData?.from_number || "N/A"}
+          </p>
+        </div>
       </div>
 
       <p className="md:text-md mb-6 text-gray-600 sm:text-sm lg:text-lg">
@@ -193,19 +197,23 @@ export default function Welcome() {
           {items.map((item) => (
             <div
               key={item.id}
-              className="mb-4 flex items-center space-x-2 rounded-lg bg-primary text-white shadow-md hover:shadow-lg sm:p-2 md:p-2 lg:p-4"
+              className="mb-4 flex cursor-pointer items-center space-x-4 rounded-lg bg-primary text-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl sm:p-2 md:p-3 lg:p-4"
             >
               <Checkbox
                 id={item.id.toString()}
                 onChange={() =>
                   handleCheckboxChange(item.id, item.item, item.points)
                 }
+                className=""
               />
               <label
                 htmlFor={item.id.toString()}
-                className="md:text-md uppercase sm:text-sm lg:text-lg"
+                className="md:text-md flex-1 cursor-pointer font-semibold uppercase tracking-wide sm:text-sm lg:text-lg"
               >
-                {item.item} - {item.points} points
+                {item.item} -{" "}
+                <span className="text-secondary font-bold">
+                  {item.points} points
+                </span>
               </label>
             </div>
           ))}
