@@ -154,7 +154,7 @@ export default function Welcome() {
       <p className="md:text-md mb-6 text-gray-600 sm:text-sm lg:text-lg">
         Redeem Your Loyalty Points and Get Exciting Rewards
       </p>
-      <form onSubmit={handleRedemption}>
+      <form onSubmit={handleRedemption} className="text-center flex items-center flex-col justify-center">
         <div className="mb-6 grid sm:grid-cols-1 sm:gap-2 md:grid-cols-2 md:gap-3 lg:grid-cols-3 lg:gap-4">
           {[
             { id: "1", item: "Camera", points: 200 },
@@ -176,7 +176,7 @@ export default function Welcome() {
               />
               <label
                 htmlFor={item.id}
-                className="md:text-md sm:text-sm lg:text-lg"
+                className="md:text-md sm:text-sm lg:text-lg uppercase"
               >
                 {item.item} - {item.points} points
               </label>
