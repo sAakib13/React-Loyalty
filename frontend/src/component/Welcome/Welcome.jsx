@@ -19,9 +19,12 @@ export default function Welcome() {
     const fetchData = async () => {
       try {
         const contactId = "CT4dd4e07a77c5ffef"; // Replace with your actual contact_id
-        const response = await axios.get(`http://localhost:5000/api/user-data`, {
-          params: { contact_id: contactId },
-        });
+        const response = await axios.get(
+          `http://localhost:5000/api/user-data`,
+          {
+            params: { contact_id: contactId },
+          },
+        );
 
         console.log("Response Data:", response.data);
 
@@ -46,14 +49,16 @@ export default function Welcome() {
     navigate("/");
   };
 
-  const handleCheckboxChange = (id, points) => {
+  const handleCheckboxChange = (id, item, points) => {
     const updatedItems = [...selectedItems];
     const index = updatedItems.findIndex((item) => item.id === id);
 
     if (index > -1) {
+      // If the item already exists in the array, remove it
       updatedItems.splice(index, 1);
     } else {
-      updatedItems.push({ id, points });
+      // If the item doesn't exist, add it
+      updatedItems.push({ id, item, points });
     }
 
     setSelectedItems(updatedItems);
@@ -62,7 +67,10 @@ export default function Welcome() {
   const handleRedemption = async (event) => {
     event.preventDefault();
 
-    const totalPoints = selectedItems.reduce((acc, item) => acc + item.points, 0);
+    const totalPoints = selectedItems.reduce(
+      (acc, item) => acc + item.points,
+      0,
+    );
 
     if (userData?.vars?.points < totalPoints) {
       alert("Insufficient points to redeem the selected items.");
@@ -82,7 +90,7 @@ export default function Welcome() {
     } catch (err) {
       console.error(
         "Error during redemption:",
-        err.response ? err.response.data : err.message
+        err.response ? err.response.data : err.message,
       );
       alert("Failed to complete redemption.");
     }
@@ -123,19 +131,24 @@ export default function Welcome() {
       </h1>
       <div className="md:text-md mb-6 flex flex-col items-center space-y-2 text-gray-600 sm:text-sm lg:text-lg">
         <p>
-          <span className="font-semibold">Age:</span> {userData?.vars?.age || "N/A"}
+          <span className="font-semibold">Age:</span>{" "}
+          {userData?.vars?.age || "N/A"}
         </p>
         <p>
-          <span className="font-semibold">Date of Birth:</span> {userData?.vars?.dob || "N/A"}
+          <span className="font-semibold">Date of Birth:</span>{" "}
+          {userData?.vars?.dob || "N/A"}
         </p>
         <p>
-          <span className="font-semibold">Email:</span> {userData?.vars?.email || "N/A"}
+          <span className="font-semibold">Email:</span>{" "}
+          {userData?.vars?.email || "N/A"}
         </p>
         <p>
-          <span className="font-semibold">Loyalty Points:</span> {userData?.vars?.points || 0}
+          <span className="font-semibold">Loyalty Points:</span>{" "}
+          {userData?.vars?.points || 0}
         </p>
         <p>
-          <span className="font-semibold">Phone Number:</span> {userData?.from_number || "N/A"}
+          <span className="font-semibold">Phone Number:</span>{" "}
+          {userData?.from_number || "N/A"}
         </p>
       </div>
       <p className="md:text-md mb-6 text-gray-600 sm:text-sm lg:text-lg">
@@ -144,12 +157,12 @@ export default function Welcome() {
       <form onSubmit={handleRedemption}>
         <div className="mb-6 grid sm:grid-cols-1 sm:gap-2 md:grid-cols-2 md:gap-3 lg:grid-cols-3 lg:gap-4">
           {[
-            { id: "1", name: "Camera", points: 200 },
-            { id: "2", name: "HeadPhones", points: 100 },
-            { id: "3", name: "Television", points: 1000 },
-            { id: "4", name: "SmartPhones", points: 300 },
-            { id: "5", name: "Mouse", points: 100 },
-            { id: "6", name: "Movie Ticket", points: 50 },
+            { id: "1", item: "Camera", points: 200 },
+            { id: "2", item: "HeadPhones", points: 100 },
+            { id: "3", item: "Television", points: 1000 },
+            { id: "4", item: "SmartPhones", points: 300 },
+            { id: "5", item: "Mouse", points: 100 },
+            { id: "6", item: "Movie Ticket", points: 50 },
           ].map((item) => (
             <div
               key={item.id}
@@ -157,10 +170,15 @@ export default function Welcome() {
             >
               <Checkbox
                 id={item.id}
-                onChange={() => handleCheckboxChange(item.id, item.points)}
+                onChange={() =>
+                  handleCheckboxChange(item.id, item.item, item.points)
+                }
               />
-              <label htmlFor={item.id} className="md:text-md sm:text-sm lg:text-lg">
-                {item.name} - {item.points} points
+              <label
+                htmlFor={item.id}
+                className="md:text-md sm:text-sm lg:text-lg"
+              >
+                {item.item} - {item.points} points
               </label>
             </div>
           ))}

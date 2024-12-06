@@ -193,8 +193,10 @@ app.post("/redemption", async (req, res) => {
         api_key: API_KEY, // Replace with your actual API key
         context: "contact",
         phone_number,
-        currentPoints,
-        selectedItems,
+        variables: {
+          currentPoints,
+          selectedItems,
+        },
       },
       {
         headers: {
