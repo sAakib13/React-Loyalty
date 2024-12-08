@@ -16,6 +16,8 @@ export default function Welcome() {
   const [error, setError] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
   const [items, setItems] = useState([]);
+  const [redemptionResults, setRedemptionResults] = useState([]);
+  const [redemptionSummary, setRedemptionSummary] = useState(null);
 
   // Fetch user data on component mount
   useEffect(() => {
@@ -106,8 +108,18 @@ export default function Welcome() {
       });
 
       console.log("Redemption response:", response);
-      alert("Redemption successful!");
-      // Optionally, refresh user data to update points
+
+      if (response.success) {
+        const { results, finalResult } = response.data.return_value;
+
+        // Save results and summary in state
+        setRedemptionResults(results);
+        setRedemptionSummary(finalResult);
+
+        alert("Redemption successful!");
+      } else {
+        throw new Error("Redemption response indicates failure.");
+      }
     } catch (err) {
       console.error(
         "Error during redemption:",
@@ -225,6 +237,34 @@ export default function Welcome() {
           Redeem Now
         </Button>
       </form>
+
+      {redemptionResults.length > 0 && (
+        <div className="mt-6 w-full max-w-lg rounded-lg bg-white p-6 shadow-lg">
+          <h2 className="mb-4 text-lg font-bold text-primary">
+            Redemption Results
+          </h2>
+          <ul className="space-y-3">
+            {redemptionResults.map((result, index) => (
+              <li key={index} className="rounded-lg bg-gray-100 p-3 shadow-md">
+                <p className="text-md font-semibold">{result.item}</p>
+                <p className="text-sm">
+                  Points Redeemed:{" "}
+                  <span className="font-bold">{result.points}</span>
+                </p>
+                <p className="text-sm">{result.message}</p>
+              </li>
+            ))}
+          </ul>
+          {redemptionSummary && (
+            <div className="mt-4 text-center text-gray-700">
+              <p className="font-bold">
+                Total Points Redeemed: {redemptionSummary.totalPointsRedeemed}
+              </p>
+              <p>Final Balance: {redemptionSummary.finalBalance}</p>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Logout Button */}
       <Button
