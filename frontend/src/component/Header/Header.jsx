@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import logo from "../../assets/telerivetlogo.webp";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Drawer, Button } from "flowbite-react";
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false); // Control Drawer visibility
 
   const handleClose = () => setIsOpen(false);
-
+  const isRootPath = location.pathname === "/";
   return (
     <header className="bg-dark p-4">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
@@ -36,22 +37,26 @@ const Header = () => {
                 </a>
               </li>
             ))}
-            <li>
-              <button
-                className="text-blue-500 px-4 py-2 lg:text-tiny sm:text-sm"
-                onClick={() => navigate("/signin")}
-              >
-                Sign In
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => navigate("/login")}
-                className="rounded-2xl border-2 border-blue-500 px-4 py-2 text-white hover:bg-blue-500 transition duration-300 lg:text-tiny sm:text-sm"
-              >
-                Loyalty Points
-              </button>
-            </li>
+            {isRootPath && (
+              <>
+                <li>
+                  <button
+                    className="text-blue-500 px-4 py-2 lg:text-tiny sm:text-sm"
+                    onClick={() => navigate("/signin")}
+                  >
+                    Sign In
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/login")}
+                    className="rounded-2xl border-2 border-blue-500 px-4 py-2 text-white hover:bg-blue-500 transition duration-300 lg:text-tiny sm:text-sm"
+                  >
+                    Programs
+                  </button>
+                </li>
+              </>
+            )}
           </ul>
         </nav>
 
@@ -117,28 +122,32 @@ const Header = () => {
                   </a>
                 </li>
               ))}
-              <li>
-                <button
-                  className="block w-full text-left px-4 py-2 text-primary hover:bg-primary hover:text-white font-medium"
-                  onClick={() => {
-                    navigate("/signin");
-                    handleClose();
-                  }}
-                >
-                  Sign In
-                </button>
-              </li>
-              <li>
-                <button
-                  className="block w-full text-left rounded-lg border-2 border-blue-500 px-4 py-2 hover:bg-primary hover:text-white transition duration-300 font-medium"
-                  onClick={() => {
-                    navigate("/login");
-                    handleClose();
-                  }}
-                >
-                  Loyalty Points
-                </button>
-              </li>
+              {isRootPath && (
+                <>
+                  <li>
+                    <button
+                      className="block w-full text-left px-4 py-2 text-primary hover:bg-primary hover:text-white font-medium"
+                      onClick={() => {
+                        navigate("/signin");
+                        handleClose();
+                      }}
+                    >
+                      Sign In
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      className="block w-full text-left rounded-lg border-2 border-blue-500 px-4 py-2 hover:bg-primary hover:text-white transition duration-300 font-medium"
+                      onClick={() => {
+                        navigate("/login");
+                        handleClose();
+                      }}
+                    >
+                      Programs
+                    </button>
+                  </li>
+                </>
+              )}
             </ul>
           </Drawer.Items>
         </Drawer>
