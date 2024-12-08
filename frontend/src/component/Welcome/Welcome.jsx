@@ -135,7 +135,7 @@ export default function Welcome() {
 
   // Main return block
   return (
-    <div className="sm:2 flex h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 md:p-2 lg:p-4">
+    <div className="sm:2 flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 md:p-2 lg:p-4">
       {/* User Dropdown */}
       <div className="absolute right-3 top-4 flex items-center space-x-2">
         <Dropdown
