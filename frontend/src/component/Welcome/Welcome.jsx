@@ -164,7 +164,7 @@ export default function Welcome() {
       </div>
 
       {/* Welcome Section */}
-      <h1 className="mb-6 font-extrabold text-primary sm:text-2xl md:text-4xl lg:text-5xl">
+      <h1 className="mb-6 font-extrabold capitalize text-primary sm:text-2xl md:text-4xl lg:text-5xl">
         Hello {userData?.vars?.email.split("@")[0] || "User"}, Welcome!
       </h1>
 
@@ -172,8 +172,8 @@ export default function Welcome() {
       <div className="md:text-md mb-8 w-full max-w-md rounded-lg bg-white p-6 shadow-lg transition-shadow hover:shadow-xl sm:text-sm lg:text-lg">
         <div className="space-y-3 text-center text-gray-800">
           <p>
-            <span className="font-semibold text-primary">Age:</span>{" "}
-            {userData?.vars?.age || "N/A"}
+            <span className="font-semibold text-primary">Phone Number:</span>{" "}
+            {userData?.from_number || "N/A"}
           </p>
           <p>
             <span className="font-semibold text-primary">Date of Birth:</span>{" "}
@@ -184,14 +184,14 @@ export default function Welcome() {
             {userData?.vars?.email || "N/A"}
           </p>
           <p>
+            <span className="font-semibold text-primary">Age:</span>{" "}
+            {userData?.vars?.age || "N/A"}
+          </p>
+          <p>
             <span className="font-semibold text-primary">Loyalty Points:</span>{" "}
             <span className="text-secondary font-bold">
               {userData?.vars?.points || 0}
             </span>
-          </p>
-          <p>
-            <span className="font-semibold text-primary">Phone Number:</span>{" "}
-            {userData?.from_number || "N/A"}
           </p>
         </div>
       </div>
