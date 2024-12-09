@@ -184,9 +184,9 @@ export default function Welcome() {
       </h1>
 
       {/* Rest of the Content */}
-      <div className="bg-gradient-to-br">
+      <div>
         {/* User Details Section */}
-        <div className="max-w-7xl mx-auto rounded-lg overflow-hidden">
+        <div className="max-w-7xl mx-auto rounded-lg overflow-hidden bg-gradient-to-br">
           {/* Header Section */}
           <div className="bg-primary text-white p-6">
             <h2 className="text-xl font-semibold">Rewards</h2>
@@ -230,7 +230,7 @@ export default function Welcome() {
           </div>
         </div>
 
-        <p className="text-2xl font-bold text-gray-800 mt-4 mb-6 p-6">
+        <p className="text-2xl font-bold text-gray-800 mt-4 mb-2 pl-6">
           Redeem
         </p>
 
@@ -243,11 +243,11 @@ export default function Welcome() {
                 }`}
             >
               {/* Item Image */}
-              <img
+              {/* <img
                 src={reward}
                 alt={item.item}
                 className="w-full h-32 object-cover rounded-md mb-4"
-              />
+              /> */}
 
               {/* Item Details */}
               <h3 className={`text-xl font-bold text-gray-800 mb-2 ${selectedItems.find(selected => selected.id === item.id) ? "text-white" : "text-primary"}`}>{item.item}</h3>
