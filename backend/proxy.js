@@ -136,7 +136,7 @@ app.post("/generate-otp", async (req, res) => {
       }
     );
 
-    console.log("API Response:", response.data); // Log the Telerivet response
+    console.log("API Response for OTP:", response.data); // Log the Telerivet response
     res.json(response.data);
   } catch (error) {
     console.error(

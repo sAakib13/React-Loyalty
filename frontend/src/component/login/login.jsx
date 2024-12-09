@@ -26,7 +26,7 @@ export default function Login() {
 
       console.log("OTP Response:", otpResponse);
       // Navigate to the welcome page with phone state
-      navigate("/otp", { state: { phone } });
+      navigate("/otp", { state: { phone, otpData: otpResponse } });
     } catch (error) {
       console.error("Failed to generate OTP:", error);
     }
@@ -35,7 +35,7 @@ export default function Login() {
   return (
     <div className="flex h-screen">
       {/* Sidebar Section */}
-      <div className="flex lg:w-1/2 md:w-0 sm:w-0 flex-col items-center justify-center bg-primary text-white">
+      <div className="flex flex-col items-center justify-center bg-primary text-white sm:w-0 md:w-0 lg:w-1/2">
         <div className="text-center">
           <div className="mb-4">
             <img src={logo} alt="Logo" />
@@ -44,21 +44,25 @@ export default function Login() {
       </div>
 
       {/* Login Form Section */}
-      <div className="flex lg:w-1/2 md:w-[100%] sm:w-[100%] flex-col items-center justify-center lg:bg-white md:bg-primary sm:bg-primary" >
+      <div className="flex flex-col items-center justify-center sm:w-[100%] sm:bg-primary md:w-[100%] md:bg-primary lg:w-1/2 lg:bg-white">
         <div className="text-center">
-          <div className="mb-4 lg:w-0 md:w-[100%] sm:w-[100%]">
-            <img src={logo} alt="Logo" className="w-36 mx-auto" />
+          <div className="mb-4 sm:w-[100%] md:w-[100%] lg:w-0">
+            <img src={logo} alt="Logo" className="mx-auto w-36" />
           </div>
         </div>
         <form
-          className="flex w-full max-w-sm flex-col gap-6 md:px-4 sm:px-7"
+          className="flex w-full max-w-sm flex-col gap-6 sm:px-7 md:px-4"
           onSubmit={handleSubmit}
         >
-          <h2 className="md:mt-8 sm:mt-8 lg:mt-0 text-center lg:text-3xl sm:text-2xl md:text-2xl  font-bold lg:text-primary md:text-white sm:text-white">
+          <h2 className="text-center font-bold sm:mt-8 sm:text-2xl sm:text-white md:mt-8 md:text-2xl md:text-white lg:mt-0 lg:text-3xl lg:text-primary">
             Log in
           </h2>
           <div>
-            <Label htmlFor="phonenumber" value="Phone Number" className="lg:text-black sm:text-white md:text-white" />
+            <Label
+              htmlFor="phonenumber"
+              value="Phone Number"
+              className="sm:text-white md:text-white lg:text-black"
+            />
             <TextInput
               id="phonenumber"
               type="phonenumber"
@@ -82,7 +86,12 @@ export default function Login() {
           </Button>
         </form>
         <div className="mt-4 text-sm">
-          <a href="/register" className="lg:text-gray-500 lg:hover:text-teal-500 hover:underline  sm:text-white md:text-white sm:hover:text-black md:hover:text-black">Don't have a account? Register Here</a>
+          <a
+            href="/register"
+            className="hover:underline sm:text-white sm:hover:text-black md:text-white md:hover:text-black lg:text-gray-500 lg:hover:text-teal-500"
+          >
+            Don't have a account? Register Here
+          </a>
         </div>
       </div>
     </div>
