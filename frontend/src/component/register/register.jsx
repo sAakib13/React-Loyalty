@@ -31,7 +31,23 @@ const RegistrationForm = () => {
         age: formData.age,
       });
 
-      setMessage({ text: response.message, type: "success" });
+      // Check the response from the backend
+      if (response.success && response.data.return_value === true) {
+        setMessage({
+          text: "User registered successfully!",
+          type: "success",
+        });
+      } else if (response.success && response.data.return_value === false) {
+        setMessage({
+          text: "You are already registered in the program.",
+          type: "error",
+        });
+      } else {
+        setMessage({
+          text: "An unknown error occurred. Please try again.",
+          type: "error",
+        });
+      }
     } catch (error) {
       setMessage({
         text: "Failed to register user. Please try again.",
@@ -151,7 +167,7 @@ const RegistrationForm = () => {
               href="/login"
               className="hover:underline sm:text-white sm:hover:text-black md:text-white md:hover:text-black lg:text-gray-500 lg:hover:text-teal-500"
             >
-              Already have a account? Login Here
+              Already have an account? Login Here
             </a>
           </div>
           {message.text && (

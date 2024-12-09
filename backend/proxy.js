@@ -223,16 +223,24 @@ app.post("/register-user", async (req, res) => {
 
     console.log("User added successfully to Telerivet:", response.data);
 
-    // Respond with success
-    res.json({ success: true, message: "User registered successfully!" });
+    // Respond with the full Telerivet API response
+    res.json({
+      success: true,
+      message: "User registered successfully!",
+      data: response.data, // Include the full API response
+    });
   } catch (error) {
     console.error(
       "Error occurred:",
       error.response ? error.response.data : error.message
     );
-    res
-      .status(500)
-      .json({ success: false, message: "Failed to register user" });
+
+    // Respond with error details
+    res.status(500).json({
+      success: false,
+      message: "Failed to register user",
+      error: error.response ? error.response.data : error.message,
+    });
   }
 });
 
