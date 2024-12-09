@@ -136,7 +136,7 @@ app.post("/generate-otp", async (req, res) => {
       }
     );
 
-    console.log("API Response:", response.data); // Log the Telerivet response
+    console.log("API Response for OTP:", response.data); // Log the Telerivet response
     res.json(response.data);
   } catch (error) {
     console.error(
@@ -196,7 +196,7 @@ app.post("/register-user", async (req, res) => {
   const API_URL_ADD_USER =
     "https://api.telerivet.com/v1/projects/PJb993879964086d72/services/SV70a0b59d483d613c/invoke";
 
-  console.log("Registering user:", { phone_number, name, email, dob, age });
+  console.log("Registering user:", { phone_number, name, email, dob });
 
   try {
     // Call the Telerivet API to add the user
@@ -211,7 +211,6 @@ app.post("/register-user", async (req, res) => {
           name,
           email,
           dob,
-          age,
         },
       },
       {
@@ -223,16 +222,24 @@ app.post("/register-user", async (req, res) => {
 
     console.log("User added successfully to Telerivet:", response.data);
 
-    // Respond with success
-    res.json({ success: true, message: "User registered successfully!" });
+    // Respond with the full Telerivet API response
+    res.json({
+      success: true,
+      message: "User registered successfully!",
+      data: response.data, // Include the full API response
+    });
   } catch (error) {
     console.error(
       "Error occurred:",
       error.response ? error.response.data : error.message
     );
-    res
-      .status(500)
-      .json({ success: false, message: "Failed to register user" });
+
+    // Respond with error details
+    res.status(500).json({
+      success: false,
+      message: "Failed to register user",
+      error: error.response ? error.response.data : error.message,
+    });
   }
 });
 

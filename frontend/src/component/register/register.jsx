@@ -31,7 +31,23 @@ const RegistrationForm = () => {
         age: formData.age,
       });
 
-      setMessage({ text: response.message, type: "success" });
+      // Check the response from the backend
+      if (response.success && response.data.return_value === true) {
+        setMessage({
+          text: "User registered successfully!",
+          type: "success",
+        });
+      } else if (response.success && response.data.return_value === false) {
+        setMessage({
+          text: "You are already registered in the program.",
+          type: "error",
+        });
+      } else {
+        setMessage({
+          text: "An unknown error occurred. Please try again.",
+          type: "error",
+        });
+      }
     } catch (error) {
       setMessage({
         text: "Failed to register user. Please try again.",
@@ -43,23 +59,34 @@ const RegistrationForm = () => {
   return (
     <div className="flex h-screen">
       {/* Sidebar Section */}
-      <div className="flex lg:w-1/2 md:w-0 sm:w-0 flex-col items-center justify-center bg-primary text-white">
+      <div className="flex flex-col items-center justify-center bg-primary text-white sm:w-0 md:w-0 lg:w-1/2">
         <div className="text-center">
           <div className="mb-4">
-            <img src={logo} alt="Logo" />
+            <a href="/">
+              <img src={logo} alt="Logo" />
+            </a>
           </div>
         </div>
       </div>
-      <div className="flex lg:w-1/2 md:w-[100%] sm:w-[100%] flex-col items-center justify-center lg:bg-white md:bg-primary sm:bg-primary" >
+      <div className="flex flex-col items-center justify-center sm:w-[100%] sm:bg-primary md:w-[100%] md:bg-primary lg:w-1/2 lg:bg-white">
         <div className="text-center">
-          <div className="mb-1 lg:w-0 md:w-[100%] sm:w-[100%]">
-            <img src={logo} alt="Logo" className="w-36 mx-auto" />
+          <div className="mb-1 sm:w-[100%] md:w-[100%] lg:w-0">
+            <img src={logo} alt="Logo" className="mx-auto w-36" />
           </div>
         </div>
-        <form className="w-full max-w-sm flex flex-col lg:gap-4 md:gap-2 md:px-4 sm:px-7" onSubmit={handleSubmit}>
-          <h2 className="md:mt-7 sm:mt-7 lg:mt-0 text-center lg:text-3xl sm:text-2xl md:text-2xl  font-bold lg:text-primary md:text-white sm:text-white">Registration Form</h2>
+        <form
+          className="flex w-full max-w-sm flex-col sm:px-7 md:gap-2 md:px-4 lg:gap-4"
+          onSubmit={handleSubmit}
+        >
+          <h2 className="text-center font-bold sm:mt-7 sm:text-2xl sm:text-white md:mt-7 md:text-2xl md:text-white lg:mt-0 lg:text-3xl lg:text-primary">
+            Registration Form
+          </h2>
           <div>
-            <Label htmlFor="name" value="Name" className="lg:text-black sm:text-white md:text-white" />
+            <Label
+              htmlFor="name"
+              value="Name"
+              className="sm:text-white md:text-white lg:text-black"
+            />
             <TextInput
               type="text"
               id="name"
@@ -70,7 +97,11 @@ const RegistrationForm = () => {
             />
           </div>
           <div>
-            <Label htmlFor="email" value="Email" className="lg:text-black sm:text-white md:text-white"></Label>
+            <Label
+              htmlFor="email"
+              value="Email"
+              className="sm:text-white md:text-white lg:text-black"
+            ></Label>
             <TextInput
               type="email"
               id="email"
@@ -81,7 +112,11 @@ const RegistrationForm = () => {
             />
           </div>
           <div>
-            <Label htmlFor="phone" value="Phone Number" className="lg:text-black sm:text-white md:text-white"></Label>
+            <Label
+              htmlFor="phone"
+              value="Phone Number"
+              className="sm:text-white md:text-white lg:text-black"
+            ></Label>
             <TextInput
               type="tel"
               id="phone"
@@ -92,7 +127,11 @@ const RegistrationForm = () => {
             />
           </div>
           <div>
-            <Label htmlFor="dob" value="Birth Date" className="lg:text-black sm:text-white md:text-white"></Label>
+            <Label
+              htmlFor="dob"
+              value="Birth Date"
+              className="sm:text-white md:text-white lg:text-black"
+            ></Label>
             <TextInput
               type="date"
               id="dob"
@@ -102,8 +141,12 @@ const RegistrationForm = () => {
               required
             />
           </div>
-          <div>
-            <Label htmlFor="age" value="Age" className="lg:text-black sm:text-white md:text-white" />
+          {/* <div>
+            <Label
+              htmlFor="age"
+              value="Age"
+              className="sm:text-white md:text-white lg:text-black"
+            />
             <TextInput
               type="number"
               id="age"
@@ -112,17 +155,26 @@ const RegistrationForm = () => {
               onChange={handleChange}
               required
             />
-          </div>
-          <Button type="submit" className="bg-primary hover:bg-teal-600 sm:mt-4">
+          </div> */}
+          <Button
+            type="submit"
+            className="bg-primary hover:bg-teal-600 sm:mt-4"
+          >
             Register
           </Button>
-          <div className="mt-2 text-sm text-center">
-            <a href="/login" className="lg:text-gray-500 lg:hover:text-teal-500 hover:underline  sm:text-white md:text-white sm:hover:text-black md:hover:text-black">Already have a account? Login Here</a>
+          <div className="mt-2 text-center text-sm">
+            <a
+              href="/login"
+              className="hover:underline sm:text-white sm:hover:text-black md:text-white md:hover:text-black lg:text-gray-500 lg:hover:text-teal-500"
+            >
+              Already have an account? Login Here
+            </a>
           </div>
           {message.text && (
             <div
-              className={`mt-4 rounded-lg p-2 text-center text-white ${message.type === "success" ? "bg-green-600" : "bg-red-600"
-                }`}
+              className={`mt-4 rounded-lg p-2 text-center text-white ${
+                message.type === "success" ? "bg-green-600" : "bg-red-600"
+              }`}
             >
               {message.text}
             </div>
