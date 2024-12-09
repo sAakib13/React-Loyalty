@@ -38,7 +38,9 @@ export default function Login() {
       <div className="flex flex-col items-center justify-center bg-primary text-white sm:w-0 md:w-0 lg:w-1/2">
         <div className="text-center">
           <div className="mb-4">
-            <img src={logo} alt="Logo" />
+            <a href="/">
+              <img src={logo} alt="Logo" />
+            </a>
           </div>
         </div>
       </div>

@@ -9,12 +9,12 @@ import { validateOTP } from "../../utlis/validateOTP";
 const OTP = () => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
-  const { state } = useLocation(); // Get the phone number passed from the previous page
-  const { phone, otpData } = state || {}; // Destructure phone from the state
+  const { state } = useLocation();
+  const { phone, otpData } = state || {};
   const {
     return_value: otpCode,
-    log_entries: logEntries,
-    sent_messages: sentMessages,
+    // log_entries: logEntries,
+    // sent_messages: sentMessages,
   } = otpData || {};
 
   const handleSubmit = async (event) => {
@@ -57,7 +57,7 @@ const OTP = () => {
         </p>
 
         {otpCode ? (
-          <div className="mt-5 rounded-md bg-green-100 p-4 m-4">
+          <div className="m-4 mt-5 rounded-md bg-green-100 p-4">
             <h2 className="text-xl font-bold text-green-700">
               Your OTP Code: {otpCode}
             </h2>
@@ -80,7 +80,7 @@ const OTP = () => {
           <div>
             <Label
               htmlFor="otp"
-              value="Enter the 7-digit OTP sent to you"
+              value="Enter the OTP sent to you"
               className="sm:text-white md:text-white lg:text-black"
             />
             <TextInput

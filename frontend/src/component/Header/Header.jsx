@@ -12,15 +12,21 @@ const Header = () => {
   const isRootPath = location.pathname === "/";
   return (
     <header className="bg-dark p-4">
-      <div className="flex items-center justify-between max-w-7xl mx-auto">
+      <div className="mx-auto flex max-w-7xl items-center justify-between">
         {/* Logo Section */}
         <div>
-          <img src={logo} alt="Telerivet Logo" className="lg:h-12 w-auto sm:h-12 md:h-5" />
+          <a href="/">
+            <img
+              src={logo}
+              alt="Telerivet Logo"
+              className="w-auto sm:h-12 md:h-5 lg:h-12"
+            />
+          </a>
         </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:block">
-          <ul className="flex space-x-6 items-center">
+          <ul className="flex items-center space-x-6">
             {[
               { name: "Product", href: "#product" },
               { name: "Pricing", href: "#pricing" },
@@ -31,7 +37,7 @@ const Header = () => {
               <li key={item.name}>
                 <a
                   href={item.href}
-                  className="hover:bg-primary hover:text-white px-4 py-2 rounded-lg transition duration-200 text-white lg:text-tiny sm:text-sm"
+                  className="rounded-lg px-4 py-2 text-white transition duration-200 hover:bg-primary hover:text-white sm:text-sm lg:text-tiny"
                 >
                   {item.name}
                 </a>
@@ -41,7 +47,7 @@ const Header = () => {
               <>
                 <li>
                   <button
-                    className="text-blue-500 px-4 py-2 lg:text-tiny sm:text-sm"
+                    className="px-4 py-2 text-blue-500 sm:text-sm lg:text-tiny"
                     onClick={() => navigate("/signin")}
                   >
                     Sign In
@@ -50,7 +56,7 @@ const Header = () => {
                 <li>
                   <button
                     onClick={() => navigate("/login")}
-                    className="rounded-2xl border-2 border-blue-500 px-4 py-2 text-white hover:bg-blue-500 transition duration-300 lg:text-tiny sm:text-sm"
+                    className="rounded-2xl border-2 border-blue-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-500 sm:text-sm lg:text-tiny"
                   >
                     Programs
                   </button>
@@ -61,10 +67,13 @@ const Header = () => {
         </nav>
 
         {/* Mobile Drawer Toggle */}
-        <Button onClick={() => setIsOpen(true)} className="md:hidden text-white">
+        <Button
+          onClick={() => setIsOpen(true)}
+          className="text-white md:hidden"
+        >
           {/* Hamburger Icon */}
           <svg
-            className="w-6 h-6"
+            className="h-6 w-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -80,13 +89,18 @@ const Header = () => {
         </Button>
 
         {/* Drawer Component */}
-        <Drawer open={isOpen} onClose={handleClose} position="right" className="w-1/2">
+        <Drawer
+          open={isOpen}
+          onClose={handleClose}
+          position="right"
+          className="w-1/2"
+        >
           {/* Custom Close Button */}
           <div className="flex justify-end p-4">
             <button onClick={handleClose} className="text-gray-600">
               {/* Close (X) Icon */}
               <svg
-                className="w-6 h-6"
+                className="h-6 w-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -126,7 +140,7 @@ const Header = () => {
                 <>
                   <li>
                     <button
-                      className="block w-full text-left px-4 py-2 text-primary hover:bg-primary hover:text-white font-medium"
+                      className="block w-full px-4 py-2 text-left font-medium text-primary hover:bg-primary hover:text-white"
                       onClick={() => {
                         navigate("/signin");
                         handleClose();
@@ -137,7 +151,7 @@ const Header = () => {
                   </li>
                   <li>
                     <button
-                      className="block w-full text-left rounded-lg border-2 border-blue-500 px-4 py-2 hover:bg-primary hover:text-white transition duration-300 font-medium"
+                      className="block w-full rounded-lg border-2 border-blue-500 px-4 py-2 text-left font-medium transition duration-300 hover:bg-primary hover:text-white"
                       onClick={() => {
                         navigate("/login");
                         handleClose();
