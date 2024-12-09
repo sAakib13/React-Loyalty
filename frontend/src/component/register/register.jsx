@@ -141,7 +141,7 @@ const RegistrationForm = () => {
               required
             />
           </div>
-          <div>
+          {/* <div>
             <Label
               htmlFor="age"
               value="Age"
@@ -155,7 +155,7 @@ const RegistrationForm = () => {
               onChange={handleChange}
               required
             />
-          </div>
+          </div> */}
           <Button
             type="submit"
             className="bg-primary hover:bg-teal-600 sm:mt-4"

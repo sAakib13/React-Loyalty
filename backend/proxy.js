@@ -196,7 +196,7 @@ app.post("/register-user", async (req, res) => {
   const API_URL_ADD_USER =
     "https://api.telerivet.com/v1/projects/PJb993879964086d72/services/SV70a0b59d483d613c/invoke";
 
-  console.log("Registering user:", { phone_number, name, email, dob, age });
+  console.log("Registering user:", { phone_number, name, email, dob });
 
   try {
     // Call the Telerivet API to add the user
@@ -211,7 +211,6 @@ app.post("/register-user", async (req, res) => {
           name,
           email,
           dob,
-          age,
         },
       },
       {

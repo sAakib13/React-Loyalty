@@ -7,7 +7,6 @@ export const registerUser = async ({ phone_number, name, email, dob, age }) => {
       name,
       email,
       dob,
-      age,
     });
     return response.data;
   } catch (error) {
