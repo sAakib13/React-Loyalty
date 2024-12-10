@@ -17,7 +17,7 @@ const Menu = () => {
         <div className="flex flex-col items-center justify-center bg-primary py-10">
           <h1 className="text-3xl font-bold text-white lg:text-5xl">
             Explore Our Programs
-          </h1> 
+          </h1>
         </div>
 
         {/* Card Section */}
@@ -46,7 +46,7 @@ const Menu = () => {
                   className="h-48 w-full rounded-t-lg object-cover"
                 />
                 <h5 className="mt-4 text-center text-2xl font-bold tracking-tight text-primary">
-                  Referral Program
+                  P2P Referral Program
                 </h5>
               </Card>
             </a>
@@ -60,7 +60,7 @@ const Menu = () => {
                   className="h-48 w-full rounded-t-lg object-cover"
                 />
                 <h5 className="mt-4 text-center text-2xl font-bold tracking-tight text-primary">
-                  Randomizer Program
+                  Spin the Wheel
                 </h5>
               </Card>
             </a>

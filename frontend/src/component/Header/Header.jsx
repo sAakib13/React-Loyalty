@@ -28,11 +28,11 @@ const Header = () => {
         <nav className="hidden md:block">
           <ul className="flex items-center space-x-6">
             {[
-              { name: "Product", href: "#product" },
-              { name: "Pricing", href: "#pricing" },
-              { name: "Guide", href: "#guide" },
-              { name: "Solution", href: "#solution" },
-              { name: "About", href: "#about" },
+              { name: "Product", href: "https://www.telerivet.com/product/platform" },
+              // { name: "Pricing", href: "#pricing" },
+              { name: "Guide", href: "https://guide.telerivet.com/hc/en-us?hsLang=en" },
+              { name: "Solution", href: "https://www.telerivet.com/solutions" },
+              { name: "About", href: "https://www.telerivet.com/about" },
             ].map((item) => (
               <li key={item.name}>
                 <a
@@ -46,17 +46,17 @@ const Header = () => {
             {isRootPath && (
               <>
                 <li>
-                  <button
-                    className="px-4 py-2 text-blue-500 sm:text-sm lg:text-tiny"
-                    onClick={() => navigate("/signin")}
+                  <a href="https://telerivet.com/login?hsLang=en"
+                    className="px-4 py-2 text-primary sm:text-sm lg:text-tiny  hover:text-primary"
+
                   >
                     Sign In
-                  </button>
+                  </a>
                 </li>
                 <li>
                   <button
                     onClick={() => navigate("/login")}
-                    className="rounded-2xl border-2 border-blue-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-500 sm:text-sm lg:text-tiny"
+                    className="rounded-2xl border-2 border-primary px-4 py-2 text-white transition duration-300 hover:bg-primary sm:text-sm lg:text-tiny"
                   >
                     Programs
                   </button>
@@ -120,11 +120,11 @@ const Header = () => {
           <Drawer.Items>
             <ul className="space-y-4">
               {[
-                { name: "Product", href: "#product" },
-                { name: "Pricing", href: "#pricing" },
-                { name: "Guide", href: "#guide" },
-                { name: "Solution", href: "#solution" },
-                { name: "About", href: "#about" },
+                { name: "Product", href: "https://www.telerivet.com/product/platform" },
+                // { name: "Pricing", href: "#pricing" },
+                { name: "Guide", href: "https://guide.telerivet.com/hc/en-us?hsLang=en" },
+                { name: "Solution", href: "https://www.telerivet.com/solutions" },
+                { name: "About", href: "https://www.telerivet.com/about" },
               ].map((item) => (
                 <li key={item.name}>
                   <a
