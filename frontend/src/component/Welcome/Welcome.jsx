@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 import userImage from "../../assets/user.png";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { redemption } from "../../utlis/redemption"; // Adjust the path as needed
-import reward from "../../assets/reward.jpg";
+import { redemption } from "../../utlis/redemption"; 
 import { calculatedRedemption } from "../../utlis/calculatedRedemption";
 import coin from "../../assets/coin.png";
 import phone from "../../assets/phone.png";

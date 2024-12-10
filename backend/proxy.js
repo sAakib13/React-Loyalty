@@ -115,6 +115,48 @@ app.get("/api/get-items", async (req, res) => {
   }
 });
 
+const FETCH_CONTACT_URL =
+  "https://api.telerivet.com/v1/projects/PJb993879964086d72/contacts?phone_number=555-0137";
+
+app.get("/api/get-contactID", async (req, res) => {
+  const { phone_number } = req.query;
+
+  if (!phone_number) {
+    return res.status(400).json({ error: "phone_number is required" });
+  }
+
+  console.log(`Fetching contact data for phone number: ${phone_number}`);
+
+  try {
+    const response = await axios.get(FETCH_CONTACT_URL, {
+      // params: { phone_number },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Basic ${Buffer.from(`${API_KEY}:`).toString("base64")}`,
+      },
+    });
+
+    console.log("Fetched Contact Data:", response.data);
+
+    // Format the response data to include id, phone_number, and name
+    const formattedData = response.data.data.map((contact) => ({
+      id: contact.id,
+      phone_number: contact.phone_number,
+      name: contact.name || "Unknown", // Fallback if name is missing
+    }));
+
+    console.log("Formatted Contact Data:", formattedData);
+
+    res.json(formattedData);
+  } catch (error) {
+    console.error(
+      "Error fetching contact data:",
+      error.response?.data || error.message
+    );
+    res.status(500).json({ error: "Failed to fetch contact data" });
+  }
+});
+
 app.post("/generate-otp", async (req, res) => {
   const { phone_number } = req.body;
 
