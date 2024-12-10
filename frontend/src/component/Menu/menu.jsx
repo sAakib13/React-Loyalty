@@ -17,7 +17,7 @@ const Menu = () => {
         <div className="flex flex-col items-center justify-center bg-primary py-10">
           <h1 className="text-3xl font-bold text-white lg:text-5xl">
             Explore Our Programs
-          </h1>
+          </h1> 
         </div>
 
         {/* Card Section */}
