@@ -9,7 +9,6 @@ const RegistrationForm = () => {
     email: "",
     phone: "",
     dob: "",
-    age: "",
   });
 
   const [message, setMessage] = useState({ text: "", type: "" });
@@ -28,7 +27,6 @@ const RegistrationForm = () => {
         name: formData.name,
         email: formData.email,
         dob: formData.dob,
-        age: formData.age,
       });
 
       // Check the response from the backend
