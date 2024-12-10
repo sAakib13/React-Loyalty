@@ -22,37 +22,6 @@ const API_KEY = "maDfO_xfsRc3VEH7Dzzi7mll9slFHTgELpMK";
 const FETCH_USER_DATA_URL =
   "https://api.telerivet.com/v1/projects/PJb993879964086d72/tables/DT932fc0bd7948618d/rows";
 
-// app.get("/api/get-contact-id", async (req, res) => {
-//   const { phoneNumber } = req.query; // Extract phoneNumber from query parameters
-//   console.log("Fetching contact ID for phone number:", phoneNumber);
-
-//   if (!phoneNumber) {
-//     return res.status(400).json({ error: "Phone number is required" });
-//   }
-
-//   try {
-//     const response = await axios.get(TELERIVET_API_URL, {
-//       params: { phone_number: phoneNumber },
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Basic ${Buffer.from(`${API_KEY}:`).toString("base64")}`,
-//       },
-//     });
-
-//     console.log("Fetched Contact Data:", response.data);
-
-//     // Adjust based on the response structure from Telerivet
-//     const contactId = response.data.contact_id;
-//     res.json({ contactId });
-//   } catch (error) {
-//     console.error(
-//       "Error fetching contact ID:",
-//       error.response ? error.response.data : error.message
-//     );
-//     res.status(500).json({ error: "Failed to fetch contact ID" });
-//   }
-// });
-
 app.get("/api/user-data", async (req, res) => {
   const { contact_id } = req.query; // Expect contact_id to be passed as a query parameter
 
@@ -116,7 +85,7 @@ app.get("/api/get-items", async (req, res) => {
 });
 
 const FETCH_CONTACT_URL =
-  "https://api.telerivet.com/v1/projects/PJb993879964086d72/contacts?phone_number=555-0137";
+  "https://api.telerivet.com/v1/projects/PJb993879964086d72/contacts";
 
 app.get("/api/get-contactID", async (req, res) => {
   const { phone_number } = req.query;
@@ -128,32 +97,39 @@ app.get("/api/get-contactID", async (req, res) => {
   console.log(`Fetching contact data for phone number: ${phone_number}`);
 
   try {
-    const response = await axios.get(FETCH_CONTACT_URL, {
-      // params: { phone_number },
+    // Set up request configuration
+    const config = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Basic ${Buffer.from(`${API_KEY}:`).toString("base64")}`,
       },
-    });
+      params: { phone_number }, // Use phone_number dynamically
+    };
+
+    // Make the API call
+    const response = await axios.get(FETCH_CONTACT_URL, config);
 
     console.log("Fetched Contact Data:", response.data);
 
-    // Format the response data to include id, phone_number, and name
-    const formattedData = response.data.data.map((contact) => ({
-      id: contact.id,
-      phone_number: contact.phone_number,
-      name: contact.name || "Unknown", // Fallback if name is missing
-    }));
-
-    console.log("Formatted Contact Data:", formattedData);
-
-    res.json(formattedData);
+    // Return data as is or formatted if necessary
+    res.json({
+      success: true,
+      data: response.data.data.map((contact) => ({
+        id: contact.id,
+        phone_number: contact.phone_number,
+        name: contact.name || "Unknown",
+      })),
+    });
   } catch (error) {
     console.error(
       "Error fetching contact data:",
       error.response?.data || error.message
     );
-    res.status(500).json({ error: "Failed to fetch contact data" });
+    res.status(500).json({
+      success: false,
+      error: "Failed to fetch contact data",
+      details: error.response?.data || error.message,
+    });
   }
 });
 
