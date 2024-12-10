@@ -149,6 +149,11 @@ export default function Welcome() {
     }
   };
 
+  const computeColumns = (numItems) => {
+    if (numItems < 2) return 1;
+    return 2;
+  };
+
   // Render loading or error state
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -288,12 +293,17 @@ export default function Welcome() {
         </div>
         <div className="flex items-center justify-center">
           {redemptionResults.length > 0 && (
-            <div className="mt-6 flex w-full flex-grow flex-col items-center justify-center rounded-lg bg-white p-6 shadow-lg">
+            <div className="mt-6 flex flex-grow flex-col items-center justify-center rounded-lg bg-white p-6 shadow-lg">
               <h2 className="mb-4 text-lg font-bold text-primary">
                 Redemption Results
               </h2>
               <ul className="space-y-3">
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2">
+                <div
+                  className="grid gap-6 items-center justify-items-center"
+                  style={{
+                    gridTemplateColumns: `repeat(${computeColumns(redemptionResults.length)}, minmax(0, 1fr))`,
+                  }}
+                >
                   {redemptionResults.map((result, index) => (
                     <li
                       key={index}
@@ -308,6 +318,7 @@ export default function Welcome() {
                     </li>
                   ))}
                 </div>
+
               </ul>
               {redemptionSummary && (
                 <div className="mt-4 text-center text-gray-700">
@@ -329,11 +340,10 @@ export default function Welcome() {
             {items.map((item) => (
               <div
                 key={item.id}
-                className={`relative flex w-72 flex-col items-center rounded-lg p-6 shadow-md ${
-                  selectedItems.find((selected) => selected.id === item.id)
-                    ? "bg-primary"
-                    : "bg-white"
-                }`}
+                className={`relative flex w-72 flex-col items-center rounded-lg p-6 shadow-md ${selectedItems.find((selected) => selected.id === item.id)
+                  ? "bg-primary"
+                  : "bg-white"
+                  }`}
               >
                 {/* Item Image */}
                 {/* <img

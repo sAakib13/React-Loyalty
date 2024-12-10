@@ -48,6 +48,7 @@ const Menu = () => {
           <h1 className="text-3xl font-bold text-white lg:text-5xl">
             Explore Our Programs
           </h1>
+          </h1>
         </div>
 
         {/* Loading or Card Section */}
@@ -72,38 +73,37 @@ const Menu = () => {
                 </Card>
               </a>
 
-              {/* Referral Program Card */}
-              <a href="/">
-                <Card className="h-full">
-                  <img
-                    src={referral}
-                    alt="Referral Program"
-                    className="h-48 w-full rounded-t-lg object-cover"
-                  />
-                  <h5 className="mt-4 text-center text-2xl font-bold tracking-tight text-primary">
-                    Referral Program
-                  </h5>
-                </Card>
-              </a>
+            {/* Referral Program Card */}
+            <a href="/">
+              <Card className="h-full">
+                <img
+                  src={referral}
+                  alt="Referral Program"
+                  className="h-48 w-full rounded-t-lg object-cover"
+                />
+                <h5 className="mt-4 text-center text-2xl font-bold tracking-tight text-primary">
+                  P2P Referral Program
+                </h5>
+              </Card>
+            </a>
 
-              {/* Randomizer Program Card */}
-              <a href="/">
-                <Card className="h-full">
-                  <img
-                    src={randomizer}
-                    alt="Randomizer Program"
-                    className="h-48 w-full rounded-t-lg object-cover"
-                  />
-                  <h5 className="mt-4 text-center text-2xl font-bold tracking-tight text-primary">
-                    Randomizer Program
-                  </h5>
-                </Card>
-              </a>
-            </div>
+            {/* Randomizer Program Card */}
+            <a href="/">
+              <Card className="h-full">
+                <img
+                  src={randomizer}
+                  alt="Randomizer Program"
+                  className="h-48 w-full rounded-t-lg object-cover"
+                />
+                <h5 className="mt-4 text-center text-2xl font-bold tracking-tight text-primary">
+                  Spin the Wheel
+                </h5>
+              </Card>
+            </a>
           </div>
-        )}
-      </main>
-    </div>
+          </div>
+          </main>
+          </div>
   );
 };
 
