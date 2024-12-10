@@ -4,19 +4,21 @@ import { Button, Checkbox, Dropdown, Avatar } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import userImage from "../../assets/user.png";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { redemption } from "../../utlis/redemption"; 
+import { redemption } from "../../utlis/redemption";
 import { calculatedRedemption } from "../../utlis/calculatedRedemption";
 import coin from "../../assets/coin.png";
-import phone from "../../assets/phone.png";
+import phoneIcon from "../../assets/phone.png";
 import calendar from "../../assets/calendar.png";
 import mail from "../../assets/mail.png";
 import age from "../../assets/age.png";
 
 export default function Welcome() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { phone } = location.state || {};
 
-  // State hooks for user data, loading, errors, selected items, and available items
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,24 +28,33 @@ export default function Welcome() {
   const [redemptionSummary, setRedemptionSummary] = useState(null);
   const [calculatedResults, setCalculatedResults] = useState(null);
 
-  // Fetch user data on component mount
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchContactIdAndUserData = async () => {
       try {
-        const contactId = "CT4dd4e07a77c5ffef"; // Replace with your actual contact_id
-        const response = await axios.get(
-          `http://localhost:5000/api/user-data`,
-          {
-            params: { contact_id: contactId },
-          },
+        if (!phone) throw new Error("Phone number is not provided.");
+
+        // Step 1: Fetch the contact ID using the phone number
+        const contactResponse = await axios.get(
+          "http://localhost:5000/api/get-contactID",
+          { params: { phone_number: phone } },
         );
 
-        console.log("Response Data:", response.data);
+        if (contactResponse.data.data && contactResponse.data.data.length > 0) {
+          const contactId = contactResponse.data.data[0].id;
 
-        if (response.data.data && response.data.data.length > 0) {
-          setUserData(response.data.data[0]);
+          // Step 2: Use the fetched contact ID to retrieve user data
+          const userResponse = await axios.get(
+            "http://localhost:5000/api/user-data",
+            { params: { contact_id: contactId } },
+          );
+
+          if (userResponse.data.data && userResponse.data.data.length > 0) {
+            setUserData(userResponse.data.data[0]);
+          } else {
+            throw new Error("No user data found.");
+          }
         } else {
-          throw new Error("No user data found.");
+          throw new Error("No contact ID found for this phone number.");
         }
       } catch (err) {
         setError("Failed to fetch user data");
@@ -53,15 +64,14 @@ export default function Welcome() {
       }
     };
 
-    fetchData();
-  }, []);
+    fetchContactIdAndUserData();
+  }, [phone]);
 
-  // Fetch items for redemption on component mount
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/get-items`);
-        setItems(response.data); // Update state with the fetched items
+        const response = await axios.get("http://localhost:5000/api/get-items");
+        setItems(response.data);
       } catch (error) {
         console.error("Error fetching items:", error);
         setError("Failed to fetch items");
@@ -71,29 +81,24 @@ export default function Welcome() {
     fetchItems();
   }, []);
 
-  // Handle logout button click
   const handleLogout = (event) => {
     event.preventDefault();
     navigate("/");
   };
 
-  // Handle checkbox change for selecting items
   const handleCheckboxChange = (id, item, points) => {
     const updatedItems = [...selectedItems];
     const index = updatedItems.findIndex((selected) => selected.id === id);
 
     if (index > -1) {
-      // Remove item if already selected
       updatedItems.splice(index, 1);
     } else {
-      // Add item if not already selected
       updatedItems.push({ id, item, points });
     }
 
     setSelectedItems(updatedItems);
   };
 
-  // Handle redemption submission
   const handleRedemption = async (event) => {
     event.preventDefault();
 
@@ -108,37 +113,28 @@ export default function Welcome() {
     }
 
     try {
-      // Trigger the redemption process
       const redemptionResponse = await redemption({
         phone_number: userData?.from_number,
         currentPoints: userData?.vars?.points,
         selectedItems,
       });
 
-      console.log("Redemption response:", redemptionResponse);
-
       if (redemptionResponse.success) {
         const { results, finalResult } = redemptionResponse.data.return_value;
-
-        // Save results and summary in state
         setRedemptionResults(results);
         setRedemptionSummary(finalResult);
-
         alert("Redemption successful!");
       } else {
         throw new Error("Redemption response indicates failure.");
       }
 
-      // Trigger the calculated redemption process
       const calculatedResponse = await calculatedRedemption({
         phone_number: userData?.from_number,
         currentPoints: userData?.vars?.points,
         selectedItems,
       });
 
-      console.log("Calculated Redemption response:", calculatedResponse);
-
-      setCalculatedResults(calculatedResponse); // Save calculated results in state
+      setCalculatedResults(calculatedResponse);
       alert("Calculation successful!");
     } catch (err) {
       console.error(
@@ -149,18 +145,14 @@ export default function Welcome() {
     }
   };
 
-  const computeColumns = (numItems) => {
-    if (numItems < 2) return 1;
-    return 2;
-  };
+  const computeColumns = (numItems) => (numItems < 2 ? 1 : 2);
 
-  // Render loading or error state
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   // Main return block
   return (
-    <div className="sm:2 flex min-h-screen flex-col items-center bg-white from-gray-50 to-gray-100 md:p-2 lg:p-4">
+    <div className="ssm:2 flex min-h-screen flex-col items-center bg-white from-gray-50 to-gray-100 md:p-2 lg:p-4">
       {/* Top Bar: Points and Dropdown */}
       <div className="flex w-full items-center justify-end gap-4 rounded-lg bg-white p-4">
         {/* Points Section */}
@@ -248,7 +240,7 @@ export default function Welcome() {
                   {
                     label: "Phone Number:",
                     value: userData?.from_number || "N/A",
-                    icon: phone,
+                    icon: phoneIcon,
                   },
                   {
                     label: "Date of Birth:",
@@ -299,7 +291,7 @@ export default function Welcome() {
               </h2>
               <ul className="space-y-3">
                 <div
-                  className="grid gap-6 items-center justify-items-center"
+                  className="grid items-center justify-items-center gap-6"
                   style={{
                     gridTemplateColumns: `repeat(${computeColumns(redemptionResults.length)}, minmax(0, 1fr))`,
                   }}
@@ -318,7 +310,6 @@ export default function Welcome() {
                     </li>
                   ))}
                 </div>
-
               </ul>
               {redemptionSummary && (
                 <div className="mt-4 text-center text-gray-700">
@@ -340,10 +331,11 @@ export default function Welcome() {
             {items.map((item) => (
               <div
                 key={item.id}
-                className={`relative flex w-72 flex-col items-center rounded-lg p-6 shadow-md ${selectedItems.find((selected) => selected.id === item.id)
-                  ? "bg-primary"
-                  : "bg-white"
-                  }`}
+                className={`relative flex w-72 flex-col items-center rounded-lg p-6 shadow-md ${
+                  selectedItems.find((selected) => selected.id === item.id)
+                    ? "bg-primary"
+                    : "bg-white"
+                }`}
               >
                 {/* Item Image */}
                 {/* <img

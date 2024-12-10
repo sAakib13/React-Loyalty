@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import Header from "../Header/Header";
 import { Card } from "flowbite-react";
 import loyalty from "../../assets/loyalty.jpg";
@@ -34,8 +34,8 @@ const Menu = () => {
     fetchContactData();
   }, [phone]);
 
-  const renderCard = (imgSrc, altText, title, link) => (
-    <a href={link}>
+  const renderCard = (imgSrc, altText, title, link, state = {}) => (
+    <Link to={link} state={state}>
       <Card className="h-full">
         <img
           src={imgSrc}
@@ -46,7 +46,7 @@ const Menu = () => {
           {title}
         </h5>
       </Card>
-    </a>
+    </Link>
   );
 
   return (
@@ -75,6 +75,7 @@ const Menu = () => {
                 "Loyalty Rewards",
                 "Loyalty Rewards",
                 "/welcome",
+                { phone },
               )}
               {renderCard(
                 referral,
