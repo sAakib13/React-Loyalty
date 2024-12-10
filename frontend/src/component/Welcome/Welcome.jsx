@@ -6,7 +6,6 @@ import userImage from "../../assets/user.png";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { redemption } from "../../utlis/redemption"; // Adjust the path as needed
-import coin from "../../assets/coin.png";
 import reward from "../../assets/reward.jpg";
 import { calculatedRedemption } from "../../utlis/calculatedRedemption";
 import coin from "../../assets/coin.png";
