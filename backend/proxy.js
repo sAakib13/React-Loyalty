@@ -288,6 +288,51 @@ app.post("/redemption", async (req, res) => {
   }
 });
 
+app.post("/calculatedRedemption", async (req, res) => {
+  const { phone_number, currentPoints, selectedItems } = req.body;
+
+  console.log("Received Redemption Request:", {
+    phone_number,
+    currentPoints,
+    selectedItems,
+  });
+
+  try {
+    // Call the external API (e.g., Telerivet)
+    const apiResponse = await axios.post(
+      "https://api.telerivet.com/v1/projects/PJb993879964086d72/services/SV2041e026e3027869/invoke",
+      {
+        api_key: API_KEY, // Replace with your actual API key
+        context: "contact",
+        phone_number,
+        variables: {
+          currentPoints,
+          selectedItems,
+        },
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("External API response:", apiResponse.data);
+
+    // Send the actual API response back to the client
+    res.json({ success: true, data: apiResponse.data });
+  } catch (error) {
+    console.error("Error during redemption:", error);
+
+    // Send error details to the client
+    res.status(500).json({
+      success: false,
+      message: "Redemption failed.",
+      error: error.message,
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000; // Use Railway's PORT or default to 5000
 app.listen(PORT, () => {
   console.log(`Backend server running on http://localhost:${PORT}`);

@@ -6,8 +6,9 @@ import userImage from "../../assets/user.png";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { redemption } from "../../utlis/redemption"; // Adjust the path as needed
-import coin from "../../assets/coin.png"
-import reward from "../../assets/reward.jpg"
+import coin from "../../assets/coin.png";
+import reward from "../../assets/reward.jpg";
+import { calculatedRedemption } from "../../utlis/calculatedRedemption";
 
 export default function Welcome() {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ export default function Welcome() {
   const [items, setItems] = useState([]);
   const [redemptionResults, setRedemptionResults] = useState([]);
   const [redemptionSummary, setRedemptionSummary] = useState(null);
+  const [calculatedResults, setCalculatedResults] = useState(null);
 
   // Fetch user data on component mount
   useEffect(() => {
@@ -103,16 +105,17 @@ export default function Welcome() {
     }
 
     try {
-      const response = await redemption({
+      // Trigger the redemption process
+      const redemptionResponse = await redemption({
         phone_number: userData?.from_number,
         currentPoints: userData?.vars?.points,
         selectedItems,
       });
 
-      console.log("Redemption response:", response);
+      console.log("Redemption response:", redemptionResponse);
 
-      if (response.success) {
-        const { results, finalResult } = response.data.return_value;
+      if (redemptionResponse.success) {
+        const { results, finalResult } = redemptionResponse.data.return_value;
 
         // Save results and summary in state
         setRedemptionResults(results);
@@ -122,12 +125,24 @@ export default function Welcome() {
       } else {
         throw new Error("Redemption response indicates failure.");
       }
+
+      // Trigger the calculated redemption process
+      const calculatedResponse = await calculatedRedemption({
+        phone_number: userData?.from_number,
+        currentPoints: userData?.vars?.points,
+        selectedItems,
+      });
+
+      console.log("Calculated Redemption response:", calculatedResponse);
+
+      setCalculatedResults(calculatedResponse); // Save calculated results in state
+      alert("Calculation successful!");
     } catch (err) {
       console.error(
         "Error during redemption:",
         err.response ? err.response.data : err.message,
       );
-      alert("Failed to complete redemption.");
+      alert("Failed to complete redemption or calculation.");
     }
   };
 
@@ -139,10 +154,10 @@ export default function Welcome() {
   return (
     <div className="sm:2 flex min-h-screen flex-col items-center justify-center bg-white from-gray-50 to-gray-100 md:p-2 lg:p-4">
       {/* Top Bar: Points and Dropdown */}
-      <div className="flex items-center justify-end w-full p-4 bg-white rounded-lg gap-4">
+      <div className="flex w-full items-center justify-end gap-4 rounded-lg bg-white p-4">
         {/* Points Section */}
-        <div className="flex items-center gap-2 bg-gray-50 p-2 rounded-md shadow-sm">
-          <img src={coin} className="w-5 h-auto" alt="Coin Icon" />
+        <div className="flex items-center gap-2 rounded-md bg-gray-50 p-2 shadow-sm">
+          <img src={coin} className="h-auto w-5" alt="Coin Icon" />
           <p className="text-md font-bold text-yellow-500">
             {userData?.vars?.points || 0}
           </p>
@@ -168,7 +183,7 @@ export default function Welcome() {
               <span className="block text-sm font-medium">
                 <Button
                   onClick={handleLogout}
-                  className="text-black bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-md"
+                  className="rounded-md bg-gray-200 px-3 py-1 text-black hover:bg-gray-300"
                 >
                   Log Out
                 </Button>
@@ -186,61 +201,74 @@ export default function Welcome() {
       {/* Rest of the Content */}
       <div>
         {/* User Details Section */}
-        <div className="max-w-7xl mx-auto rounded-lg overflow-hidden bg-gradient-to-br">
+        <div className="mx-auto max-w-7xl overflow-hidden rounded-lg bg-gradient-to-br">
           {/* Header Section */}
-          <div className="bg-primary text-white p-6">
+          <div className="bg-primary p-6 text-white">
             <h2 className="text-xl font-semibold">Rewards</h2>
           </div>
 
-          <div className="p-6 flex flex-col md:flex-row gap-6">
+          <div className="flex flex-col gap-6 p-6 md:flex-row">
             {/* My Points Section */}
             <div className="flex-1">
               <h3 className="text-lg font-semibold text-gray-800">My Points</h3>
-              <div className="mt-4 flex flex-col items-center bg-white p-6 rounded-lg shadow-sm h-48">
-                <img src={coin} className="w-10 h-auto" alt="Coin Icon" />
+              <div className="mt-4 flex h-48 flex-col items-center rounded-lg bg-white p-6 shadow-sm">
+                <img src={coin} className="h-auto w-10" alt="Coin Icon" />
                 <p className="text-4xl font-bold text-primary">
                   {userData?.vars?.points || 0}
                 </p>
-                <p className="text-gray-600 mt-2">Your Balance</p>
+                <p className="mt-2 text-gray-600">Your Balance</p>
               </div>
             </div>
 
             {/* My Details Section */}
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-gray-800">My Details</h3>
-              <div className="mt-4 space-y-4 bg-white p-6 rounded-lg shadow-sm h-48">
+              <h3 className="text-lg font-semibold text-gray-800">
+                My Details
+              </h3>
+              <div className="mt-4 h-48 space-y-4 rounded-lg bg-white p-6 shadow-sm">
                 <div className="flex justify-between">
                   <p className="font-semibold text-gray-700">Phone Number:</p>
-                  <p className="text-gray-900">{userData?.from_number || "N/A"}</p>
+                  <p className="text-gray-900">
+                    {userData?.from_number || "N/A"}
+                  </p>
                 </div>
                 <div className="flex justify-between">
                   <p className="font-semibold text-gray-700">Date of Birth:</p>
-                  <p className="text-gray-900">{userData?.vars?.dob || "N/A"}</p>
+                  <p className="text-gray-900">
+                    {userData?.vars?.dob || "N/A"}
+                  </p>
                 </div>
                 <div className="flex justify-between">
                   <p className="font-semibold text-gray-700">Email:</p>
-                  <p className="text-gray-900">{userData?.vars?.email || "N/A"}</p>
+                  <p className="text-gray-900">
+                    {userData?.vars?.email || "N/A"}
+                  </p>
                 </div>
                 <div className="flex justify-between">
                   <p className="font-semibold text-gray-700">Age:</p>
-                  <p className="text-gray-900">{userData?.vars?.age || "N/A"}</p>
+                  <p className="text-gray-900">
+                    {userData?.vars?.age || "N/A"}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <p className="text-2xl font-bold text-gray-800 mt-4 mb-2 pl-6">
+        <p className="mb-2 mt-4 pl-6 text-2xl font-bold text-gray-800">
           Redeem
         </p>
 
         {/* Redemption Form */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
+        <div className="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {items.map((item) => (
             <div
               key={item.id}
-              className={`relative flex flex-col items-center bg-white rounded-lg shadow-md p-6 w-72 ${selectedItems.find(selected => selected.id === item.id) ? "bg-blue-500" : "bg-white"
-                }`}
+              className={`relative flex w-72 flex-col items-center rounded-lg bg-white p-6 shadow-md ${
+                selectedItems.find((selected) => selected.id === item.id)
+                  ? "bg-blue-500"
+                  : "bg-white"
+              }`}
             >
               {/* Item Image */}
               {/* <img
@@ -250,41 +278,56 @@ export default function Welcome() {
               /> */}
 
               {/* Item Details */}
-              <h3 className={`text-xl font-bold text-gray-800 mb-2 ${selectedItems.find(selected => selected.id === item.id) ? "text-white" : "text-primary"}`}>{item.item}</h3>
-              <p className={`text-sm text-gray-600 mb-4 ${selectedItems.find(selected => selected.id === item.id) ? "text-white" : "text-gray-600"}`}>
-                <span className={`text-primary font-bold ${selectedItems.find(selected => selected.id === item.id) ? "text-white" : "text-primary"}`}>{item.points}</span> points
+              <h3
+                className={`mb-2 text-xl font-bold text-gray-800 ${selectedItems.find((selected) => selected.id === item.id) ? "text-white" : "text-primary"}`}
+              >
+                {item.item}
+              </h3>
+              <p
+                className={`mb-4 text-sm text-gray-600 ${selectedItems.find((selected) => selected.id === item.id) ? "text-white" : "text-gray-600"}`}
+              >
+                <span
+                  className={`font-bold text-primary ${selectedItems.find((selected) => selected.id === item.id) ? "text-white" : "text-primary"}`}
+                >
+                  {item.points}
+                </span>{" "}
+                points
               </p>
 
               {/* Button logic changes */}
               <label
-                className={`${selectedItems.find(selected => selected.id === item.id) ? "bg-gray-500" : "bg-primary"} text-white flex items-center gap-2 cursor-pointer py-2 px-6 rounded-lg`}
+                className={`${selectedItems.find((selected) => selected.id === item.id) ? "bg-gray-500" : "bg-primary"} flex cursor-pointer items-center gap-2 rounded-lg px-6 py-2 text-white`}
               >
                 <input
                   type="checkbox"
-                  className="w-5 h-5"
-                  checked={selectedItems.find(selected => selected.id === item.id) ? true : false}
-                  onChange={() => handleCheckboxChange(item.id, item.item, item.points)}
+                  className="h-5 w-5"
+                  checked={
+                    selectedItems.find((selected) => selected.id === item.id)
+                      ? true
+                      : false
+                  }
+                  onChange={() =>
+                    handleCheckboxChange(item.id, item.item, item.points)
+                  }
                   style={{ display: "none" }}
                 />
-                {selectedItems.find(selected => selected.id === item.id) ? "Selected" : "Select"}
+                {selectedItems.find((selected) => selected.id === item.id)
+                  ? "Selected"
+                  : "Select"}
               </label>
             </div>
           ))}
         </div>
 
-
-
         {/* Single Redeem Button */}
-        <div className="flex justify-center mt-6">
+        <div className="mt-6 flex justify-center">
           <button
             onClick={handleRedemption}
-            className="bg-primary text-white py-2 px-6 rounded-md font-semibold hover:bg-primary transition"
+            className="rounded-md bg-primary px-6 py-2 font-semibold text-white transition hover:bg-primary"
           >
             Redeem Selected Items
           </button>
         </div>
-
-
 
         {redemptionResults.length > 0 && (
           <div className="mt-6 w-full max-w-lg rounded-lg bg-white p-6 shadow-lg">
@@ -293,7 +336,10 @@ export default function Welcome() {
             </h2>
             <ul className="space-y-3">
               {redemptionResults.map((result, index) => (
-                <li key={index} className="rounded-lg bg-gray-100 p-3 shadow-md">
+                <li
+                  key={index}
+                  className="rounded-lg bg-gray-100 p-3 shadow-md"
+                >
                   <p className="text-md font-semibold">{result.item}</p>
                   <p className="text-sm">
                     Points Redeemed:{" "}
@@ -315,6 +361,5 @@ export default function Welcome() {
         )}
       </div>
     </div>
-
   );
 }
