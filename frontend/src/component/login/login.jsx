@@ -4,7 +4,7 @@ import "../../index.css";
 import logo from "../../assets/telerivetlogo.webp";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { generateOTP } from "../../utlis/genrateOTP";
+import { generateOTP } from "../../utlis/generateOTP";
 
 export default function Login() {
   const navigate = useNavigate();
