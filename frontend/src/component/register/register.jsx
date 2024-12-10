@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { Button, Label, TextInput } from "flowbite-react";
 import logo from "../../assets/telerivetlogo.webp";
 import { registerUser } from "../../utlis/registerUser";
+import { useNavigate } from "react-router-dom";
 
 const RegistrationForm = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -35,6 +38,9 @@ const RegistrationForm = () => {
           text: "User registered successfully!",
           type: "success",
         });
+        setTimeout(() => {
+          navigate("/login");
+        }, 1500);
       } else if (response.success && response.data.return_value === false) {
         setMessage({
           text: "You are already registered in the program.",
